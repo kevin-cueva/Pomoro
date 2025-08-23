@@ -1,0 +1,79 @@
+# Archivos de compilación
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+x64/
+x86/
+[Aa][Rr][Mm]*/
+[Aa][Rr][Mm]64/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Configuración de IDE
+.vscode/
+.idea/
+*.swp
+
+# Configuración de Visual Studio
+.vs/
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+[Tt]emp/
+*.tmp
+*.bak
+*.ncb
+*.dbmdl
+*.jfm
+
+# Archivos de dependencias de NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Configuración local de paquetes NuGet
+.nuget/
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Archivos de Rider/JetBrains
+.idea/
+*.sln.iml
+
+# Configuración de MAUI (plataformas)
+# Android
+*.apk
+*.ap_
+*.aab
+*.keystore
+*.jks
+
+# iOS/macOS
+*.app
+*.ipa
+*.dSYM
+*.xcuserstate
+*.xcworkspace
+*.xcuserdatad
+Pods/
+DerivedData/
+
+# Otros
+*.DS_Store
+Thumbs.db
