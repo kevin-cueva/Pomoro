@@ -4,7 +4,7 @@ namespace ViewModels.Home;
 
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {
-    private readonly IDispatcher _dispatcher;
+    private readonly IDispatcher _dispatcher; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
     private readonly TimeSpan _duracion = TimeSpan.FromMinutes(5);
     private DateTime _inicio;
     private IDispatcherTimer _timer;
