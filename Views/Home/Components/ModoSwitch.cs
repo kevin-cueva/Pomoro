@@ -1,10 +1,9 @@
 namespace Views.Home.Components;
-
 using Microsoft.Maui.Controls.Shapes;
-using GradientStop = Microsoft.Maui.Controls.GradientStop;
 
 public class ModoSwitch : ContentView
 {
+    public ModoPomodoro ModoPomodoro { get; private set; } = ModoPomodoro.Automatic;
     public ModoSwitch()
     {
         var grid = new Grid
@@ -55,7 +54,7 @@ public class ModoSwitch : ContentView
             Margin = new Thickness(0, 0, 10, 0),
             TextColor = Colors.White
         };
-        
+
 
 
         Grid.SetRow(labelManual, 0);
@@ -79,13 +78,13 @@ public class ModoSwitch : ContentView
             // Animar el movimiento del indicator
             if (esModoAutomatico)
             {
-                
+                ModoPomodoro = ModoPomodoro.Automatic;
                 indicator.BackgroundColor = Colors.Gray;
                 await indicator.TranslateTo(0, 0, 250, Easing.SinOut);
             }
             else
             {
-                
+                ModoPomodoro = ModoPomodoro.Manual;
                 indicator.BackgroundColor = Colors.Gray;
                 await indicator.TranslateTo(100, 0, 250, Easing.SinOut); // (x, y, duración, tipoDeAnimación);
             }
@@ -95,7 +94,7 @@ public class ModoSwitch : ContentView
         {
             Content = grid,
             BackgroundColor = Colors.Black,     // Fondo negro
-            StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8)},
+            StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(0, 0),     // Espacio interno (izq, arriba, der, abajo)
             HorizontalOptions = LayoutOptions.Center,
 

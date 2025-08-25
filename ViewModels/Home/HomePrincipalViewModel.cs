@@ -5,10 +5,16 @@ namespace ViewModels.Home;
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {
     private readonly IDispatcher _dispatcher; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
-    private readonly TimeSpan _duracion = TimeSpan.FromMinutes(5);
+    private readonly TimeSpan[] _duracion = [
+        TimeSpan.FromMinutes(1), // Pomodoro
+        TimeSpan.FromMinutes(2),  // Descanso corto
+        TimeSpan.FromMinutes(1), // Pomodoro
+        TimeSpan.FromMinutes(2),  // Descanso corto
+        TimeSpan.FromMinutes(3)  // Descanso largo
+    ];
     private DateTime _inicio;
     private IDispatcherTimer _timer;
-
+    private int contTimePomodoro = 0;
     private float _progreso;
     public float Progreso
     {
@@ -22,7 +28,6 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
             }
         }
     }
-
     private string _tiempoRestante;
     public string TiempoRestante
     {
@@ -36,16 +41,15 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
             }
         }
     }
-
-    public string Title { get; } = "Bienvenido a ClarityPom";
+    public string Title { get; } = "Bienvenido a pomoro";
     public Command IniciarPomodoroCommand { get; }
+    public ModoPomodoro ModoPomodoro { get; set; }
 
     public HomePrincipalViewModel(IDispatcher dispatcher)
     {
         _dispatcher = dispatcher;
         Progreso = 0f;
-        TiempoRestante = _duracion.ToString(@"mm\:ss");
-
+        TiempoRestante = _duracion[contTimePomodoro].ToString(@"mm\:ss");
         IniciarPomodoroCommand = new Command(IniciarPomodoro);
     }
 
@@ -53,28 +57,41 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     {
         _inicio = DateTime.Now;
         Progreso = 0f;
-
+        contTimePomodoro = 0;
         _timer = _dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromMilliseconds(100);
         _timer.Tick += (s, e) => ActualizarProgreso();
         _timer.Start();
     }
-
+    private void SiguienteEstadoPomodoro()
+    {
+        _timer.Stop();
+        _inicio = DateTime.Now;
+        Progreso = 0f;
+        _timer.Start();
+    }
     private void ActualizarProgreso()
     {
         var transcurrido = DateTime.Now - _inicio;
-        var tiempoRestante = _duracion - transcurrido;
+        var tiempoRestante = _duracion[contTimePomodoro] - transcurrido;
 
         if (tiempoRestante.TotalSeconds < 0)
             tiempoRestante = TimeSpan.Zero;
 
-        Progreso = (float)Math.Min(transcurrido.TotalSeconds / _duracion.TotalSeconds, 1.0f);
+        Progreso = (float)Math.Min(transcurrido.TotalSeconds / _duracion[contTimePomodoro].TotalSeconds, 1.0f);
         TiempoRestante = tiempoRestante.ToString(@"mm\:ss");
 
-        if (Progreso >= 1.0)
+        if (Progreso >= 1.0 && contTimePomodoro < _duracion.Length - 1)
         {
-            _timer.Stop();
+            contTimePomodoro++;
+            SiguienteEstadoPomodoro();
             Console.WriteLine("✅ ¡Tiempo completado!");
+        }
+        else if (Progreso >= 1.0 && contTimePomodoro >= _duracion.Length )
+        {
+            contTimePomodoro = 0;
+            _timer.Stop();
+            Console.WriteLine("✅ ¡Tiempo completado final!");
         }
     }
 
