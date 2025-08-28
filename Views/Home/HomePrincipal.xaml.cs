@@ -1,4 +1,5 @@
 using ViewModels.Home;
+using Views.Home.Components;
 
 namespace Views.Home
 {
@@ -10,7 +11,12 @@ namespace Views.Home
 
         public HomePrincipal()
         {
+            //Boton switch de modo (automatico/manual)
+            var switchModo = new ModoSwitch();
+
             _viewModel = new HomePrincipalViewModel(Dispatcher);
+            
+
             BindingContext = _viewModel;
 
             _drawable = new ProgresoCircularDrawable();
@@ -24,6 +30,7 @@ namespace Views.Home
             // Redibujar cuando el ViewModel cambie
             _viewModel.PropertyChanged += (s, e) =>
             {
+                _viewModel.ModoPomodoro = switchModo.ModoPomodoro;
                 if (e.PropertyName == nameof(HomePrincipalViewModel.Progreso))
                     _drawable.Progreso = _viewModel.Progreso;
 
@@ -47,7 +54,7 @@ namespace Views.Home
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 Spacing = 30,
-                Children = { _grafico, botonIniciar }
+                Children = { _grafico, botonIniciar, switchModo }
             };
         }
     }
