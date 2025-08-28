@@ -1,20 +1,17 @@
 using System.ComponentModel;
+using Pomoro.Domain.DTOS;
 
 namespace ViewModels.Home;
 
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {
     private readonly IDispatcher _dispatcher; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
-    private readonly TimeSpan[] _duracion = [
-        TimeSpan.FromMinutes(1), // Pomodoro
-        TimeSpan.FromMinutes(2),  // Descanso corto
-        TimeSpan.FromMinutes(1), // Pomodoro
-        TimeSpan.FromMinutes(2),  // Descanso corto
-        TimeSpan.FromMinutes(3)  // Descanso largo
-    ];
+    private TimeSpan _duracion;
+    private int _estado;
+    private TimePomodoros _timePomodoros = new();
     private DateTime _inicio;
     private IDispatcherTimer _timer;
-    private int contTimePomodoro = 0;
+    private int contTimePomodoro;
     private float _progreso;
     public float Progreso
     {
@@ -47,9 +44,11 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
     public HomePrincipalViewModel(IDispatcher dispatcher)
     {
+        _estado = _timePomodoros.WorkDuration;
+        _duracion = TimeSpan.FromMinutes(_estado);
         _dispatcher = dispatcher;
         Progreso = 0f;
-        TiempoRestante = _duracion[contTimePomodoro].ToString(@"mm\:ss");
+        TiempoRestante = _duracion.ToString(@"mm\:ss");
         IniciarPomodoroCommand = new Command(IniciarPomodoro);
     }
 
@@ -73,26 +72,39 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     private void ActualizarProgreso()
     {
         var transcurrido = DateTime.Now - _inicio;
-        var tiempoRestante = _duracion[contTimePomodoro] - transcurrido;
+        var tiempoRestante = _duracion - transcurrido;
 
         if (tiempoRestante.TotalSeconds < 0)
             tiempoRestante = TimeSpan.Zero;
 
-        Progreso = (float)Math.Min(transcurrido.TotalSeconds / _duracion[contTimePomodoro].TotalSeconds, 1.0f);
+        Progreso = (float)Math.Min(transcurrido.TotalSeconds / _duracion.TotalSeconds, 1.0f);
         TiempoRestante = tiempoRestante.ToString(@"mm\:ss");
 
-        if (Progreso >= 1.0 && contTimePomodoro < _duracion.Length - 1)
+        if (Progreso >= 1.0 )
         {
-            contTimePomodoro++;
+            _duracion = TimeSpan.FromMinutes(EstadoPomodoro(_estado));
             SiguienteEstadoPomodoro();
-            Console.WriteLine("✅ ¡Tiempo completado!");
+            Console.WriteLine($"✅ ¡Tiempo completado! :{_estado}");
         }
-        else if (Progreso >= 1.0 && contTimePomodoro >= _duracion.Length )
-        {
-            contTimePomodoro = 0;
-            _timer.Stop();
-            Console.WriteLine("✅ ¡Tiempo completado final!");
-        }
+    }
+    private int EstadoPomodoro(int estadoActual)
+    {
+        if (estadoActual == _timePomodoros.WorkDuration)
+            {
+                contTimePomodoro++;
+                if (contTimePomodoro >= _timePomodoros.Repetitions)
+                {
+                    _estado = _timePomodoros.LongBreakDuration;
+                    contTimePomodoro = 0;
+                }
+                else
+                _estado = _timePomodoros.ShortBreakDuration;
+            }
+            
+            else
+                _estado = _timePomodoros.WorkDuration;
+
+        return _estado;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
