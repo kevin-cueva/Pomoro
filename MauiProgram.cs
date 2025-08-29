@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace Pomoro;
+using Plugin.Maui.Audio;
+using Pomoro.Services.Interfaces;
+using Pomoro.Services;
+
 
 public static class MauiProgram
 {
@@ -14,6 +18,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+		// Inyectar el servicio AudioManager
+		builder.Services.AddSingleton(AudioManager.Current);
+
+
+		builder.Services.AddSingleton<IPlaySoundEndPomodoro, PlaySoundEndPomodoro>();
+        return builder.Build();
 
 #if DEBUG
 		builder.Logging.AddDebug();

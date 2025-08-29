@@ -1,11 +1,13 @@
 using System.ComponentModel;
 using Pomoro.Domain.DTOS;
+using Pomoro.Services.Interfaces;
 
 namespace ViewModels.Home;
 
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {
-    private readonly IDispatcher _dispatcher; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
+    private readonly IPlaySoundEndPomodoro _playSoundEndPomodoro = null!;
+    private readonly IDispatcher _dispatcher = null!; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
     private TimeSpan _duracion;
     private int _estado;
     private TimePomodoros _timePomodoros = new();
@@ -42,8 +44,11 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     public Command IniciarPomodoroCommand { get; }
     public ModoPomodoro ModoPomodoro { get; set; }
 
-    public HomePrincipalViewModel(IDispatcher dispatcher)
+    public HomePrincipalViewModel(
+        IDispatcher dispatcher,
+        IPlaySoundEndPomodoro playSoundEndPomodoro)
     {
+        _playSoundEndPomodoro = playSoundEndPomodoro;
         _estado = _timePomodoros.WorkDuration;
         _duracion = TimeSpan.FromMinutes(_estado);
         _dispatcher = dispatcher;
@@ -64,6 +69,7 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     }
     private void SiguienteEstadoPomodoro()
     {
+        
         _timer.Stop();
         _inicio = DateTime.Now;
         Progreso = 0f;
@@ -104,6 +110,9 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
             else
                 _estado = _timePomodoros.WorkDuration;
 
+        _timer.Stop();
+        _playSoundEndPomodoro.ReproducirSonidoFinPomodoro();
+       
         return _estado;
     }
 

@@ -1,6 +1,7 @@
 using ViewModels.Home;
 using Views.Home.Components;
-
+using Pomoro.Services;
+using Plugin.Maui.Audio;
 namespace Views.Home
 {
     public partial class HomePrincipal : ContentPage
@@ -11,10 +12,11 @@ namespace Views.Home
 
         public HomePrincipal()
         {
+            var soundService = new PlaySoundEndPomodoro(AudioManager.Current); 
             //Boton switch de modo (automatico/manual)
             var switchModo = new ModoSwitch();
 
-            _viewModel = new HomePrincipalViewModel(Dispatcher);
+            _viewModel = new HomePrincipalViewModel(Dispatcher, soundService);
             
 
             BindingContext = _viewModel;
