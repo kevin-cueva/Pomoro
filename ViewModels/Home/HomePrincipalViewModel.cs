@@ -6,14 +6,14 @@ namespace ViewModels.Home;
 
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {
-    private readonly IPlaySoundEndPomodoro _playSoundEndPomodoro = null!;
-    private readonly IDispatcher _dispatcher = null!; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
+    private readonly IPlaySoundEndPomodoro _playSoundEndPomodoro;
+    private readonly IDispatcher _dispatcher; // es una interfaz que permite ejecutar código en el hilo principal de la aplicación (UI thread). se está usando para crear un temporizador (IDispatcherTimer) que dispara eventos en el hilo de la interfaz.
     private TimeSpan _duracion;
     private int _estado;
     private TimePomodoros _timePomodoros = new();
     private DateTime _inicio;
     private IDispatcherTimer _timer;
-    private int contTimePomodoro;
+    private int _contTimePomodoro;
     private float _progreso;
     public float Progreso
     {
@@ -61,7 +61,7 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     {
         _inicio = DateTime.Now;
         Progreso = 0f;
-        contTimePomodoro = 0;
+        _contTimePomodoro = 0;
         _timer = _dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromMilliseconds(100);
         _timer.Tick += (s, e) => ActualizarProgreso();
@@ -69,7 +69,6 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     }
     private void SiguienteEstadoPomodoro()
     {
-        
         _timer.Stop();
         _inicio = DateTime.Now;
         Progreso = 0f;
@@ -88,6 +87,7 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
         if (Progreso >= 1.0 )
         {
+            _playSoundEndPomodoro.ReproducirSonidoFinPomodoro();
             _duracion = TimeSpan.FromMinutes(EstadoPomodoro(_estado));
             SiguienteEstadoPomodoro();
             Console.WriteLine($"✅ ¡Tiempo completado! :{_estado}");
@@ -97,25 +97,20 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     {
         if (estadoActual == _timePomodoros.WorkDuration)
             {
-                contTimePomodoro++;
-                if (contTimePomodoro >= _timePomodoros.Repetitions)
+                _contTimePomodoro++;
+                if (_contTimePomodoro >= _timePomodoros.Repetitions)
                 {
                     _estado = _timePomodoros.LongBreakDuration;
-                    contTimePomodoro = 0;
+                    _contTimePomodoro = 0;
                 }
                 else
                 _estado = _timePomodoros.ShortBreakDuration;
             }
-            
             else
                 _estado = _timePomodoros.WorkDuration;
-
-        _timer.Stop();
-        _playSoundEndPomodoro.ReproducirSonidoFinPomodoro();
-       
         return _estado;
     }
-
+    
     public event PropertyChangedEventHandler PropertyChanged;
     private void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
