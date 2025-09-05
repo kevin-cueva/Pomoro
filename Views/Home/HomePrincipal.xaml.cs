@@ -13,10 +13,12 @@ namespace Views.Home
         public HomePrincipal()
         {
             var soundService = new PlaySoundEndPomodoro(AudioManager.Current); 
+        
             //Boton switch de modo (automatico/manual)
             var switchModo = new ModoSwitch();
+            var timerService = new TimerService(Dispatcher);
 
-            _viewModel = new HomePrincipalViewModel(Dispatcher, soundService);
+            _viewModel = new HomePrincipalViewModel(soundService, timerService);
             
 
             BindingContext = _viewModel;
