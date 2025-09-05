@@ -24,6 +24,7 @@ public static class MauiProgram
 
 
 		builder.Services.AddSingleton<IPlaySoundEndPomodoro, PlaySoundEndPomodoro>();
+		builder.Services.AddSingleton<ITimerService, TimerService>();
         return builder.Build();
 
 #if DEBUG
