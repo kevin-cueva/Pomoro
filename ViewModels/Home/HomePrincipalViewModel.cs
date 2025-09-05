@@ -12,11 +12,9 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
     private readonly IPlaySoundEndPomodoro _playSoundEndPomodoro;
     private readonly ITimerService _timerService;
-    
-    private TimePomodoros _timePomodoros = new();
-    private int _estado;
-    private int _contTimePomodoro;
+    private readonly IModoOperationService _modoOperationService;
 
+    private ModoOperation _estado;
     private string _tiempoRestante;
     public string TiempoRestante
     {
@@ -47,17 +45,20 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
     public string Title { get; } = "Bienvenido a pomoro";
 
-   public HomePrincipalViewModel(
-        IPlaySoundEndPomodoro playSoundEndPomodoro,
-        ITimerService timerService
-    )
+    public HomePrincipalViewModel(
+         IPlaySoundEndPomodoro playSoundEndPomodoro,
+         ITimerService timerService,
+         IModoOperationService modoOperationService
+     )
     {
+        _modoOperationService = modoOperationService;
         _playSoundEndPomodoro = playSoundEndPomodoro;
         _timerService = timerService;
 
-        _estado = _timePomodoros.WorkDuration;
+        _estado = ModoOperation.Work;
         Progreso = 0f;
-        TiempoRestante = TimeSpan.FromMinutes(_estado).ToString(@"mm\:ss");
+        TiempoRestante = TimeSpan.FromMinutes(_modoOperationService
+            .GetOperationDuration(_estado)).ToString(@"mm\:ss");
 
         IniciarPomodoroCommand = new Command(IniciarPomodoro);
 
@@ -68,7 +69,8 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
     private void IniciarPomodoro()
     {
-        var duracion = TimeSpan.FromMinutes(_estado);
+        var duracion = TimeSpan.FromMinutes(_modoOperationService
+            .GetOperationDuration(_estado));
         _timerService.Start(duracion);
     }
 
@@ -81,31 +83,10 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
     private void OnTiempoCompletado()
     {
         _playSoundEndPomodoro.ReproducirSonidoFinPomodoro();
-        
-        _estado = EstadoPomodoro(_estado);
-        var nuevaDuracion = TimeSpan.FromMinutes(_estado);
+        _estado = _modoOperationService.ChangeState(_estado);
+        var nuevaDuracion = TimeSpan.FromMinutes(_modoOperationService
+            .GetOperationDuration(_estado));
         _timerService.Start(nuevaDuracion); // Siguiente estado
-    }
-
-    private int EstadoPomodoro(int estadoActual)
-    {
-        if (estadoActual == _timePomodoros.WorkDuration)
-        {
-            _contTimePomodoro++;
-            if (_contTimePomodoro >= _timePomodoros.Repetitions)
-            {
-                _contTimePomodoro = 0;
-                return _timePomodoros.LongBreakDuration;
-            }
-            else
-            {
-                return _timePomodoros.ShortBreakDuration;
-            }
-        }
-        else
-        {
-            return _timePomodoros.WorkDuration;
-        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
