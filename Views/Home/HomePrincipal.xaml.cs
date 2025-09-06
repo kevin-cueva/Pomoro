@@ -54,12 +54,21 @@ namespace Views.Home
                 Button.CommandProperty,
                 nameof(HomePrincipalViewModel.IniciarPomodoroCommand));
 
+            var botonPausa = new Button
+            {
+                Text = "Iniciar Pausa",
+                HorizontalOptions = LayoutOptions.Center
+            };
+            botonPausa.SetBinding(
+                Button.CommandProperty,
+                nameof(HomePrincipalViewModel.PausaPomodoroCommand));
+
             Content = new StackLayout
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 Spacing = 30,
-                Children = { _grafico, botonIniciar, switchModo }
+                Children = { _grafico, botonIniciar, switchModo, botonPausa }
             };
         }
     }

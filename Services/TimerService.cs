@@ -71,10 +71,14 @@ namespace Pomoro.Services
 
         public void Pause()
         {
-            if (_isRunning)
+            if (_timer.IsRunning)
             {
                 _timer?.Stop();
-                _isRunning = false;
+            }
+            else
+            {
+                _inicio = DateTime.Now - (_duracion - TiempoRestante);
+                _timer?.Start();
             }
         }
 
