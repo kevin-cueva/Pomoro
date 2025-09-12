@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using Pomoro.Domain.DTOS;
-using Pomoro.Domain.Enums;
 using Pomoro.Services.Interfaces;
+using Pomoro.Domain.Enums;
 
-namespace ViewModels.Home;
+namespace Pomoro.ViewModels.Home;
 
 public class HomePrincipalViewModel : INotifyPropertyChanged
 {

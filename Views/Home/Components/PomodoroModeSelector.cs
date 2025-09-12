@@ -4,7 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.DTOS;
 using Pomoro.Domain.Enums;
 using Pomoro.Domain.Constants;
-namespace Views.Home.Components;
+namespace Pomoro.Views.Home.Components;
 
 class PomodoroModeSelector : ContentView
 {
@@ -48,7 +48,7 @@ class PomodoroModeSelector : ContentView
 
                 };
                 Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
-                SelectedButton(buttonAutomatic);
+                SelectedButton(buttonAutomatic!);
             })
         });
 
@@ -63,7 +63,7 @@ class PomodoroModeSelector : ContentView
                 {
 
                 };
-                SelectedButton(buttonMorning);
+                SelectedButton(buttonMorning!);
             })
         });
         buttonNight = new BotonMode(new BotonModeConfig
@@ -77,7 +77,7 @@ class PomodoroModeSelector : ContentView
                 {
 
                 };
-                SelectedButton(buttonNight);
+                SelectedButton(buttonNight!);
             })
         });
         buttonManual = new BotonMode(new BotonModeConfig
@@ -91,7 +91,7 @@ class PomodoroModeSelector : ContentView
                 {
 
                 };
-                SelectedButton(buttonManual);
+                SelectedButton(buttonManual!);
             })
         });
 

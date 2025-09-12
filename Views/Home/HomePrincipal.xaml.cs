@@ -1,8 +1,9 @@
 using ViewModels.Home;
-using Views.Home.Components;
 using Pomoro.Services;
 using Plugin.Maui.Audio;
-namespace Views.Home
+using Pomoro.Views.Home.Components;
+using Pomoro.ViewModels.Home;
+namespace Pomoro.Views.Home
 {
     public partial class HomePrincipal : ContentPage
     {
