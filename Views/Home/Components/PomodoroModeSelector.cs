@@ -1,8 +1,9 @@
+using System.Reflection.Metadata;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.DTOS;
 using Pomoro.Domain.Enums;
-
+using Pomoro.Domain.Constants;
 namespace Views.Home.Components;
 
 class PomodoroModeSelector : ContentView
@@ -37,9 +38,9 @@ class PomodoroModeSelector : ContentView
         #region BOTON
         buttonAutomatic = new BotonMode(new BotonModeConfig
         {
-            IconSource = "isettings_icon_white",
+            IconSource = Constants.Icons.SettingsWhite,
             Text = "Automático",
-            Color = "#111111",
+            Color = Constants.Colors.BotonSelect,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
@@ -53,9 +54,9 @@ class PomodoroModeSelector : ContentView
 
         buttonMorning = new BotonMode(new BotonModeConfig
         {
-            IconSource = "isunrise_white",
+            IconSource = Constants.Icons.SunriseWhite,
             Text = "Mañana",
-            Color = "#888888",
+            Color = Constants.Colors.BotonNoSelect,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
@@ -67,9 +68,9 @@ class PomodoroModeSelector : ContentView
         });
         buttonNight = new BotonMode(new BotonModeConfig
         {
-            IconSource = "imoon_white",
+            IconSource = Constants.Icons.MoonWhite,
             Text = "Noche",
-            Color = "#888888",
+            Color = Constants.Colors.BotonNoSelect,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
@@ -81,9 +82,9 @@ class PomodoroModeSelector : ContentView
         });
         buttonManual = new BotonMode(new BotonModeConfig
         {
-            IconSource = "isettings_maul_white",
+            IconSource = Constants.Icons.ManualWhite,
             Text = "Manual",
-            Color = "#888888",
+            Color = Constants.Colors.BotonNoSelect,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
@@ -126,13 +127,13 @@ class PomodoroModeSelector : ContentView
     private void SelectedButton(BotonMode selectedButton)
     {
         // Cambiar el color de todos los botones a gris
-        buttonAutomatic.UpdateColor("#888888");
-        buttonMorning.UpdateColor("#888888");
-        buttonNight.UpdateColor("#888888");
-        buttonManual.UpdateColor("#888888");
+        buttonAutomatic.UpdateColor(Constants.Colors.BotonNoSelect);
+        buttonMorning.UpdateColor(Constants.Colors.BotonNoSelect);
+        buttonNight.UpdateColor(Constants.Colors.BotonNoSelect);
+        buttonManual.UpdateColor(Constants.Colors.BotonNoSelect);
 
         // Cambiar el color del botón seleccionado
-        selectedButton.UpdateColor("#111111");
+        selectedButton.UpdateColor(Constants.Colors.BotonSelect);
     }
 
 }
@@ -170,7 +171,7 @@ public class BotonMode : ContentView
         var buttonFrame = new Border
         {
             Content = stack,
-            BackgroundColor = Color.FromArgb(botonModeConfig.Color),
+            BackgroundColor = (Color)Application.Current!.Resources[botonModeConfig.Color],
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(8, 8, 8, 8),     // Espacio interno (izq, arriba, der, abajo)
             HorizontalOptions = LayoutOptions.Fill,
@@ -189,7 +190,7 @@ public class BotonMode : ContentView
     {
         if (Content is Border border)
         {
-            border.BackgroundColor = Color.FromArgb(color);
+            border.BackgroundColor = (Color)Application.Current!.Resources[color];
         }
     }
 }
