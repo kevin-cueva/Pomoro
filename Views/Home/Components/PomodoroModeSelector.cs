@@ -8,6 +8,10 @@ class PomodoroModeSelector : ContentView
 {
 
     TimePomodoros TimePomodoros = new();
+    readonly BotonMode buttonAutomatic = new("isettings_icon_white", "Automático", "#111111", null);
+    readonly BotonMode buttonMorning = new("isunrise_white", "Manana", "#888888", null);
+    readonly BotonMode buttonNight = new("imoon_white", "Noche", "#888888", null);
+    readonly BotonMode buttonManual = new("isettings_maul_white", "Manual", "#888888", null);
 
     public PomodoroModeSelector()
     {
@@ -30,7 +34,7 @@ class PomodoroModeSelector : ContentView
         };
 
         #region BOTON
-        var buttonAutomatic = new BotonMode("isettings_icon_white", "Automático", new Command(() =>
+        buttonAutomatic = new BotonMode("isettings_icon_white", "Automático", "#111111", new Command(() =>
         {
             TimePomodoros = new TimePomodoros
             {
@@ -39,31 +43,36 @@ class PomodoroModeSelector : ContentView
                 LongBreakDuration = 5,
                 Repetitions = 3
             };
+            SelectedButton(buttonAutomatic);
             Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
         }));
-        var buttonMorning = new BotonMode("isunrise_white", "Manana", new Command(() =>
+
+        buttonMorning = new BotonMode("isunrise_white", "Manana", "#888888", new Command(() =>
         {
             TimePomodoros = new TimePomodoros
             {
 
             };
             Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
+            SelectedButton(buttonMorning);
         }));
-        var buttonNight = new BotonMode("imoon_white", "Noche", new Command(() =>
+        buttonNight = new BotonMode("imoon_white", "Noche", "#888888", new Command(() =>
         {
             TimePomodoros = new TimePomodoros
             {
 
             };
             Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Manual.ToString());
+            SelectedButton(buttonNight);
         }));
-        var manual = new BotonMode("isettings_maul_white", "Manual", new Command(() =>
+        buttonManual = new BotonMode("isettings_maul_white", "Manual", "#888888", new Command(() =>
         {
             TimePomodoros = new TimePomodoros
             {
 
             };
             Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
+            SelectedButton(buttonManual);
         }));
 
         Grid.SetRow(buttonAutomatic, 0);
@@ -75,11 +84,11 @@ class PomodoroModeSelector : ContentView
         Grid.SetRow(buttonNight, 1);
         Grid.SetColumn(buttonNight, 0);
 
-        Grid.SetRow(manual, 1);
-        Grid.SetColumn(manual, 1);
+        Grid.SetRow(buttonManual, 1);
+        Grid.SetColumn(buttonManual, 1);
 
         grid.Children.Add(buttonNight);
-        grid.Children.Add(manual);
+        grid.Children.Add(buttonManual);
         grid.Children.Add(buttonMorning);
         grid.Children.Add(buttonAutomatic);
 
@@ -95,11 +104,23 @@ class PomodoroModeSelector : ContentView
 
     }
 
+    private void SelectedButton(BotonMode selectedButton)
+    {
+        // Cambiar el color de todos los botones a gris
+        buttonAutomatic.UpdateColor("#888888");
+        buttonMorning.UpdateColor("#888888");
+        buttonNight.UpdateColor("#888888");
+        buttonManual.UpdateColor("#888888");
+
+        // Cambiar el color del botón seleccionado
+        selectedButton.UpdateColor("#111111");
+    }
+
 }
 
 public class BotonMode : ContentView
 {
-    public BotonMode(string iconSource, string text, Command command)
+    public BotonMode(string? iconSource, string? text, string? color, Command? command)
     {
         // Icono (puede ser FontImageSource si usas Material Icons / FontAwesome)
         var iconLabel = new Image
@@ -130,7 +151,7 @@ public class BotonMode : ContentView
         var buttonFrame = new Border
         {
             Content = stack,
-            BackgroundColor = Colors.Black,
+            BackgroundColor = Color.FromArgb(color),
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(8, 8, 8, 8),     // Espacio interno (izq, arriba, der, abajo)
             HorizontalOptions = LayoutOptions.Fill,
@@ -144,5 +165,12 @@ public class BotonMode : ContentView
         });
 
         Content = buttonFrame;
+    }
+    public void UpdateColor(string color)
+    {
+        if (Content is Border border)
+        {
+            border.BackgroundColor = Color.FromArgb(color);
+        }
     }
 }
