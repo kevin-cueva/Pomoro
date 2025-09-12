@@ -1,6 +1,7 @@
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.DTOS;
+using Pomoro.Domain.Enums;
 
 namespace Views.Home.Components;
 
@@ -8,10 +9,10 @@ class PomodoroModeSelector : ContentView
 {
 
     TimePomodoros TimePomodoros = new();
-    readonly BotonMode buttonAutomatic = new("isettings_icon_white", "Automático", "#111111", null);
-    readonly BotonMode buttonMorning = new("isunrise_white", "Manana", "#888888", null);
-    readonly BotonMode buttonNight = new("imoon_white", "Noche", "#888888", null);
-    readonly BotonMode buttonManual = new("isettings_maul_white", "Manual", "#888888", null);
+    readonly BotonMode buttonAutomatic;
+    readonly BotonMode buttonMorning;
+    readonly BotonMode buttonNight;
+    readonly BotonMode buttonManual;
 
     public PomodoroModeSelector()
     {
@@ -34,46 +35,64 @@ class PomodoroModeSelector : ContentView
         };
 
         #region BOTON
-        buttonAutomatic = new BotonMode("isettings_icon_white", "Automático", "#111111", new Command(() =>
+        buttonAutomatic = new BotonMode(new BotonModeConfig
         {
-            TimePomodoros = new TimePomodoros
+            IconSource = "isettings_icon_white",
+            Text = "Automático",
+            Color = "#111111",
+            Command = new Command(() =>
             {
-                WorkDuration = 4,
-                ShortBreakDuration = 2,
-                LongBreakDuration = 5,
-                Repetitions = 3
-            };
-            SelectedButton(buttonAutomatic);
-            Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
-        }));
+                TimePomodoros = new TimePomodoros
+                {
 
-        buttonMorning = new BotonMode("isunrise_white", "Manana", "#888888", new Command(() =>
+                };
+                Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
+                SelectedButton(buttonAutomatic);
+            })
+        });
+
+        buttonMorning = new BotonMode(new BotonModeConfig
         {
-            TimePomodoros = new TimePomodoros
+            IconSource = "isunrise_white",
+            Text = "Mañana",
+            Color = "#888888",
+            Command = new Command(() =>
             {
+                TimePomodoros = new TimePomodoros
+                {
 
-            };
-            Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
-            SelectedButton(buttonMorning);
-        }));
-        buttonNight = new BotonMode("imoon_white", "Noche", "#888888", new Command(() =>
+                };
+                SelectedButton(buttonMorning);
+            })
+        });
+        buttonNight = new BotonMode(new BotonModeConfig
         {
-            TimePomodoros = new TimePomodoros
+            IconSource = "imoon_white",
+            Text = "Noche",
+            Color = "#888888",
+            Command = new Command(() =>
             {
+                TimePomodoros = new TimePomodoros
+                {
 
-            };
-            Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Manual.ToString());
-            SelectedButton(buttonNight);
-        }));
-        buttonManual = new BotonMode("isettings_maul_white", "Manual", "#888888", new Command(() =>
+                };
+                SelectedButton(buttonNight);
+            })
+        });
+        buttonManual = new BotonMode(new BotonModeConfig
         {
-            TimePomodoros = new TimePomodoros
+            IconSource = "isettings_maul_white",
+            Text = "Manual",
+            Color = "#888888",
+            Command = new Command(() =>
             {
+                TimePomodoros = new TimePomodoros
+                {
 
-            };
-            Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
-            SelectedButton(buttonManual);
-        }));
+                };
+                SelectedButton(buttonManual);
+            })
+        });
 
         Grid.SetRow(buttonAutomatic, 0);
         Grid.SetColumn(buttonAutomatic, 0);
@@ -120,12 +139,12 @@ class PomodoroModeSelector : ContentView
 
 public class BotonMode : ContentView
 {
-    public BotonMode(string? iconSource, string? text, string? color, Command? command)
+    public BotonMode(BotonModeConfig? botonModeConfig)
     {
         // Icono (puede ser FontImageSource si usas Material Icons / FontAwesome)
         var iconLabel = new Image
         {
-            Source = iconSource, // MAUI buscará automatico.svg o automatico.png en Resources/Images
+            Source = botonModeConfig!.IconSource,
             WidthRequest = 32,
             HeightRequest = 32,
             HorizontalOptions = LayoutOptions.Center
@@ -133,7 +152,7 @@ public class BotonMode : ContentView
         // Texto debajo del ícono
         var textLabel = new Label
         {
-            Text = text,
+            Text = botonModeConfig.Text,
             FontSize = 12,
             HorizontalOptions = LayoutOptions.Center,
             TextColor = Colors.White,
@@ -151,7 +170,7 @@ public class BotonMode : ContentView
         var buttonFrame = new Border
         {
             Content = stack,
-            BackgroundColor = Color.FromArgb(color),
+            BackgroundColor = Color.FromArgb(botonModeConfig.Color),
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(8, 8, 8, 8),     // Espacio interno (izq, arriba, der, abajo)
             HorizontalOptions = LayoutOptions.Fill,
@@ -161,7 +180,7 @@ public class BotonMode : ContentView
 
         buttonFrame.GestureRecognizers.Add(new TapGestureRecognizer
         {
-            Command = command
+            Command = botonModeConfig.Command
         });
 
         Content = buttonFrame;

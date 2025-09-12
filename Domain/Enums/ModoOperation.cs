@@ -1,6 +1,4 @@
-/// <summary>
-/// Specifies the mode of operation for the Pomodoro timer.
-/// </summary>
+namespace Pomoro.Domain.Enums;
 public enum ModoOperation
 {
     Work,

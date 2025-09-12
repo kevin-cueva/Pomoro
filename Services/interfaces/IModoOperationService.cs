@@ -1,4 +1,6 @@
 
+using Pomoro.Domain.Enums;
+
 namespace Pomoro.Services.Interfaces
 {
     public interface IModoOperationService

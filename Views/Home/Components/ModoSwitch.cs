@@ -1,5 +1,6 @@
 namespace Views.Home.Components;
 using Microsoft.Maui.Controls.Shapes;
+using Pomoro.Domain.Enums;
 
 public class ModoSwitch : ContentView
 {
