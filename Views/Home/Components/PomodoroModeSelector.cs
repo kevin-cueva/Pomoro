@@ -4,6 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.DTOS;
 using Pomoro.Domain.Enums;
 using Pomoro.Domain.Constants;
+using Pomoro.Helpers;
 namespace Pomoro.Views.Home.Components;
 
 class PomodoroModeSelector : ContentView
@@ -134,6 +135,8 @@ class PomodoroModeSelector : ContentView
 
         // Cambiar el color del botón seleccionado
         selectedButton.UpdateColor(Constants.Colors.BotonSelect);
+        AppStorage.SaveData(KeyStorage.CurrentMode, ModoPomodoro.Manual.ToString());
+        
     }
 
 }
