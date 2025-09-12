@@ -1,4 +1,5 @@
 using Pomoro.Domain.DTOS;
+using Pomoro.Domain.Enums;
 using Pomoro.Services.Interfaces;
 namespace Pomoro.Services;
 
