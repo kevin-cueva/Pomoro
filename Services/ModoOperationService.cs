@@ -49,23 +49,8 @@ public class ModoOperationService : IModoOperationService
     private static TimePomodoros GetTimePomodorosStorage()
 {
     string savedMode = AppStorage.GetData(KeyStorage.CurrentMode);
-
-    // Valor por defecto si falla la lectura o conversión
-    ModoPomodoro mode = ModoPomodoro.Automatic;
-
-    // Intentar parsear solo si el valor no es nulo/vacío
-    if (!string.IsNullOrWhiteSpace(savedMode))
-    {
-        if (Enum.TryParse<ModoPomodoro>(savedMode, ignoreCase: true, out ModoPomodoro parsedMode))
-        {
-            mode = parsedMode;
-        }
-        else
-        {
-            // Opcional: loguear que el modo guardado es inválido
-            System.Diagnostics.Debug.WriteLine($"Modo Pomodoro desconocido: '{savedMode}'. Usando modo por defecto: {mode}.");
-        }
-    }
+    
+    ModoPomodoro mode = Utils.ParseEnum(savedMode, ModoPomodoro.Automatic);
 
     // Obtener los tiempos según el modo (ya sea el parseado o el por defecto)
     TimePomodoros timesPomodoro = AppStorage.GetTimePomodoros(mode);

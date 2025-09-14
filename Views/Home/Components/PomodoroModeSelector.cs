@@ -41,15 +41,11 @@ class PomodoroModeSelector : ContentView
         {
             IconSource = Constants.Icons.SettingsWhite,
             Text = "Automático",
-            Color = Constants.Colors.BotonSelect,
+            Modo = ModoPomodoro.Automatic,
             Command = new Command(() =>
             {
-                TimePomodoros = new TimePomodoros
-                {
-
-                };
-                Console.WriteLine("Modo Pomodoro: " + ModoPomodoro.Automatic.ToString());
-                SelectedButton(buttonAutomatic!);
+                AppStorage.SavePomodoro(ModoPomodoro.Automatic,new TimePomodoros());
+                SelectedButton(buttonAutomatic!, ModoPomodoro.Automatic);
             })
         });
 
@@ -57,42 +53,52 @@ class PomodoroModeSelector : ContentView
         {
             IconSource = Constants.Icons.SunriseWhite,
             Text = "Mañana",
-            Color = Constants.Colors.BotonNoSelect,
+            Modo = ModoPomodoro.Morning,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
                 {
-
+                    WorkDuration = 40,
+                    ShortBreakDuration = 7,
+                    LongBreakDuration = 20,
                 };
-                SelectedButton(buttonMorning!);
+                AppStorage.SavePomodoro(ModoPomodoro.Morning,TimePomodoros);
+
+                SelectedButton(buttonMorning!, ModoPomodoro.Morning);
             })
         });
         buttonNight = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.MoonWhite,
             Text = "Noche",
-            Color = Constants.Colors.BotonNoSelect,
+            Modo = ModoPomodoro.Night,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
                 {
-
+                    WorkDuration = 20,
+                    ShortBreakDuration = 5,
+                    LongBreakDuration = 10,
                 };
-                SelectedButton(buttonNight!);
+                AppStorage.SavePomodoro(ModoPomodoro.Night,TimePomodoros);
+                SelectedButton(buttonNight!, ModoPomodoro.Night);
             })
         });
         buttonManual = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.ManualWhite,
             Text = "Manual",
-            Color = Constants.Colors.BotonNoSelect,
+            Modo = ModoPomodoro.Manual,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
                 {
-
+                    WorkDuration = 60,
+                    ShortBreakDuration = 10,
+                    LongBreakDuration = 20,
                 };
-                SelectedButton(buttonManual!);
+                AppStorage.SavePomodoro(ModoPomodoro.Manual,TimePomodoros);
+                SelectedButton(buttonManual!, ModoPomodoro.Manual);
             })
         });
 
@@ -125,7 +131,7 @@ class PomodoroModeSelector : ContentView
 
     }
 
-    private void SelectedButton(BotonMode selectedButton)
+    private void SelectedButton(BotonMode selectedButton, ModoPomodoro modoPomodoro)
     {
         // Cambiar el color de todos los botones a gris
         buttonAutomatic.UpdateColor(Constants.Colors.BotonNoSelect);
@@ -135,7 +141,8 @@ class PomodoroModeSelector : ContentView
 
         // Cambiar el color del botón seleccionado
         selectedButton.UpdateColor(Constants.Colors.BotonSelect);
-        AppStorage.SaveData(KeyStorage.CurrentMode, ModoPomodoro.Manual.ToString());
+        
+        AppStorage.SaveData(KeyStorage.CurrentMode, modoPomodoro.ToString());
         
     }
 
@@ -174,7 +181,7 @@ public class BotonMode : ContentView
         var buttonFrame = new Border
         {
             Content = stack,
-            BackgroundColor = (Color)Application.Current!.Resources[botonModeConfig.Color],
+            BackgroundColor = SelectedButtonMode(botonModeConfig.Modo),
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(8, 8, 8, 8),     // Espacio interno (izq, arriba, der, abajo)
             HorizontalOptions = LayoutOptions.Fill,
@@ -195,5 +202,14 @@ public class BotonMode : ContentView
         {
             border.BackgroundColor = (Color)Application.Current!.Resources[color];
         }
+    }
+    private Color SelectedButtonMode(ModoPomodoro modoPomodoro)
+    {
+        var currentMode = AppStorage.GetData(KeyStorage.CurrentMode);
+        ModoPomodoro modoPomodoroLast = Utils.ParseEnum(currentMode, ModoPomodoro.Automatic);
+        if (modoPomodoro == modoPomodoroLast)
+            return (Color)Application.Current!.Resources[Constants.Colors.BotonSelect];
+        return (Color)Application.Current!.Resources[Constants.Colors.BotonNoSelect];
+
     }
 }
