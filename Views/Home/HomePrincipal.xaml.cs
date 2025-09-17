@@ -15,7 +15,8 @@ namespace Pomoro.Views.Home
         {
             //Boton switch de modo (automatico/manual)
             //var switchModo = new ModoSwitch();
-
+            //COntroles
+            var pomodoroControlsConfig = new PomodoroControlsConfig();
             //Boton de modo
             var botonGrid = new PomodoroModeSelector();
 
@@ -49,30 +50,12 @@ namespace Pomoro.Views.Home
                 _grafico.Invalidate();
             };
 
-            var botonIniciar = new Button
-            {
-                Text = "Iniciar Pomodoro",
-                HorizontalOptions = LayoutOptions.Center
-            };
-            botonIniciar.SetBinding(
-                Button.CommandProperty,
-                nameof(HomePrincipalViewModel.IniciarPomodoroCommand));
-
-            var botonPausa = new Button
-            {
-                Text = "Iniciar Pausa",
-                HorizontalOptions = LayoutOptions.Center
-            };
-            botonPausa.SetBinding(
-                Button.CommandProperty,
-                nameof(HomePrincipalViewModel.PausaPomodoroCommand));
-
             Content = new StackLayout
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 Spacing = 30,
-                Children = { _grafico, botonGrid, botonIniciar, botonPausa }
+                Children = { _grafico, pomodoroControlsConfig, botonGrid}
             };
         }
     }

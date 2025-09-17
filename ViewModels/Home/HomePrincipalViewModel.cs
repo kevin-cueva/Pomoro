@@ -10,6 +10,7 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
 
     public Command IniciarPomodoroCommand { get; }
     public Command PausaPomodoroCommand { get; }
+    public Command ReiniciarPomodoroCommand { get; }
     public ModoPomodoro ModoPomodoro { get; set; }
 
     private readonly IPlaySoundEndPomodoro _playSoundEndPomodoro;
@@ -63,7 +64,8 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
             .GetOperationDuration(_estado)).ToString(@"mm\:ss");
 
         IniciarPomodoroCommand = new Command(IniciarPomodoro);
-        PausaPomodoroCommand = new Command(() => _timerService.Pause());
+        PausaPomodoroCommand = new Command(PausaPomodoro);
+        ReiniciarPomodoroCommand = new Command(() => ReiciarPomodoro());
         // Suscribirse a eventos del servicio
         _timerService.OnTimerTick += ActualizarUI;
         _timerService.OnTimerCompleted += OnTiempoCompletado;
@@ -76,6 +78,21 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
         _timerService.Start(duracion);
     }
 
+    private void PausaPomodoro()
+    {
+        if (_timerService.TiempoRestante != TimeSpan.Zero)
+        {
+            _timerService.Pause();
+        }
+    }
+    private void ReiciarPomodoro()
+    {
+        _timerService.Reload();
+        Progreso = _timerService.Progreso;
+        TiempoRestante = _timerService.TiempoRestante.ToString(@"mm\:ss");
+        ActualizarUI();
+
+    }
     private void ActualizarUI()
     {
         Progreso = _timerService.Progreso;
