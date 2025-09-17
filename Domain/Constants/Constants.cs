@@ -12,6 +12,9 @@ public static class Constants
         public const string SunriseWhite = "isunrise_white";
         public const string MoonWhite = "imoon_white";
         public const string ManualWhite = "isettings_maul_white";
+        public const string PlayWhite = "iplay_white";
+        public const string PauseWhire = "ipause_white";
+        public const string ReloadWhite = "ireload_white";
         // 👉 agrega aquí más íconos
     }
 

@@ -9,7 +9,6 @@ namespace Pomoro.Services
         private DateTime _inicio;
         private TimeSpan _duracion;
         private bool _isRunning;
-
         public float Progreso { get; private set; }
         public TimeSpan TiempoRestante { get; private set; }
         public bool IsRunning => _isRunning;
@@ -26,18 +25,26 @@ namespace Pomoro.Services
 
         public void Start(TimeSpan duracion)
         {
-            if (_isRunning) Stop();
+            if (_isRunning)
+            {
+                _inicio = DateTime.Now - (_duracion - TiempoRestante);
+                _timer?.Start();
+            }
+            else
+            {
 
-            _duracion = duracion;
-            _inicio = DateTime.Now;
-            _isRunning = true;
+                _duracion = duracion;
+                _inicio = DateTime.Now;
+                _isRunning = true;
 
-            _timer = _dispatcher.CreateTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(100);
-            _timer.Tick += Timer_Tick;
-            _timer.Start();
+                _timer = _dispatcher.CreateTimer();
+                _timer.Interval = TimeSpan.FromMilliseconds(100);
+                _timer.Tick += Timer_Tick;
+                _timer.Start();
+            }
         }
 
+        
         private void Timer_Tick(object sender, EventArgs e)
         {
             var transcurrido = DateTime.Now - _inicio;
@@ -68,6 +75,15 @@ namespace Pomoro.Services
             }
             _isRunning = false;
         }
+        public void Reload()
+        {
+            _inicio = DateTime.Now;
+            Stop();
+            _duracion = TimeSpan.Zero;
+            Progreso = 0;
+            TiempoRestante = TimeSpan.Zero;
+            
+        }
 
         public void Pause()
         {
@@ -75,12 +91,8 @@ namespace Pomoro.Services
             {
                 _timer?.Stop();
             }
-            else
-            {
-                _inicio = DateTime.Now - (_duracion - TiempoRestante);
-                _timer?.Start();
-            }
         }
+        
 
         public void Dispose()
         {

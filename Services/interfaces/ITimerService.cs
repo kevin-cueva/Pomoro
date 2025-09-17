@@ -13,5 +13,6 @@ namespace Pomoro.Services.Interfaces
         void Start(TimeSpan duracion);
         void Stop();
         void Pause();
+        void Reload();
     }
 }
