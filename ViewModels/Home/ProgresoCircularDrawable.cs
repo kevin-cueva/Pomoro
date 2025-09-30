@@ -1,6 +1,7 @@
 
 namespace ViewModels.Home;
 using Microsoft.Maui.Graphics;
+using Pomoro.Domain.Constants;
 using System;
 public class ProgresoCircularDrawable : IDrawable
 {
@@ -16,7 +17,7 @@ public class ProgresoCircularDrawable : IDrawable
         float radioInterno = radioExterno - 15;
 
         // 1. Dibujar círculo exterior
-        canvas.StrokeColor = Colors.LightGray;
+        canvas.StrokeColor = (Color)Application.Current!.Resources[Constants.Colors.CircleBorder];
         canvas.StrokeSize = 10;
         canvas.DrawCircle(centroX, centroY, radioExterno);
 

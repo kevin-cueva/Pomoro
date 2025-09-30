@@ -32,6 +32,17 @@ public static class Constants
         public const string White = "White";
         public const string Gray600 = "Gray600";
         public const string Error = "Error";
+        public const string BotonPlay = "ButtonPlay";
+        public const string Background = "Background";
+        public const string CircleBorder = "CircleBorder";
+        public const string ButtonSecondary = "ButtonSecondary";
+        public const string ModeButton = "ModeButton";
+        public const string ModeButtonIcon = "ModeButtonIcon";
+        public const string ModeButtonActive = "ModeButtonActive";
+        public const string ModeButtonActiveIcon = "ModeButtonActiveIcon";
+        public const string Text = "Text";
+
+        
         // 👉 agrega aquí más colores
     }
 }
