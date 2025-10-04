@@ -6,6 +6,7 @@ using Pomoro.Domain.Enums;
 using Pomoro.Domain.Constants;
 using Pomoro.Helpers;
 namespace Pomoro.Views.Home.Components;
+
 public class BotonMode : ContentView
 {
     public BotonMode(BotonModeConfig? botonModeConfig)
@@ -24,7 +25,7 @@ public class BotonMode : ContentView
             Text = botonModeConfig.Text,
             FontSize = 12,
             HorizontalOptions = LayoutOptions.Center,
-            TextColor = Colors.White,
+            TextColor = (Color)Application.Current!.Resources[Constants.Colors.Text],
             FontAttributes = FontAttributes.Bold,
             Padding = new Thickness(0, 0, 0, 12)
         };
@@ -39,9 +40,10 @@ public class BotonMode : ContentView
         var buttonFrame = new Border
         {
             Content = stack,
-            BackgroundColor = BotonMode.SelectedButtonMode(botonModeConfig.Modo),
+            BackgroundColor = BotonMode.SelectedButtonModeColorInit(botonModeConfig.Modo),
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
             Padding = new Thickness(8, 8, 8, 8),     // Espacio interno (izq, arriba, der, abajo)
+            Stroke = Colors.Transparent, // Borde transparente
             HorizontalOptions = LayoutOptions.Fill,
             WidthRequest = 90,
             HeightRequest = 68
@@ -61,13 +63,28 @@ public class BotonMode : ContentView
             border.BackgroundColor = (Color)Application.Current!.Resources[color];
         }
     }
-    private static Color SelectedButtonMode(ModoPomodoro modoPomodoro)
+    public void UpdateIconColor(string iconColor)
+    {
+        if (Content is Border border && border.Content is VerticalStackLayout stack)
+        {
+            foreach (var child in stack.Children)
+            {
+                if (child is Image icon)
+                {
+                    icon.Source = iconColor;
+                }
+            }
+        }
+    }
+    private static Color SelectedButtonModeColorInit(ModoPomodoro modoPomodoro)
     {
         var currentMode = AppStorage.GetData(KeyStorage.CurrentMode);
-        ModoPomodoro modoPomodoroLast = Utils.ParseEnum(currentMode, ModoPomodoro.Automatic);
+        ModoPomodoro modoPomodoroLast = Utils.ParseEnum(currentMode, ModoPomodoro.PorDefecto);
+
         if (modoPomodoro == modoPomodoroLast)
-            return (Color)Application.Current!.Resources[Constants.Colors.BotonSelect];
-        return (Color)Application.Current!.Resources[Constants.Colors.BotonNoSelect];
+            return (Color)Application.Current!.Resources[Constants.Colors.ModeButtonActive];
+
+        return (Color)Application.Current!.Resources[Constants.Colors.ModeButton];
 
     }
 }

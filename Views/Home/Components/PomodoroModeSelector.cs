@@ -11,10 +11,10 @@ class PomodoroModeSelector : ContentView
 {
 
     TimePomodoros TimePomodoros = new();
-    readonly BotonMode buttonAutomatic;
+    readonly BotonMode buttonPorDefecto;
     readonly BotonMode buttonMorning;
     readonly BotonMode buttonNight;
-    readonly BotonMode buttonManual;
+    readonly BotonMode buttonFlexible;
 
     public PomodoroModeSelector()
     {
@@ -37,21 +37,22 @@ class PomodoroModeSelector : ContentView
         };
 
         #region BOTON
-        buttonAutomatic = new BotonMode(new BotonModeConfig
+        buttonPorDefecto = new BotonMode(new BotonModeConfig
         {
-            IconSource = Constants.Icons.SettingsWhite,
-            Text = "Automático",
-            Modo = ModoPomodoro.Automatic,
+            IconSource = Constants.Icons.PomodoroVerde,
+            Text = "Por defecto",
+            Modo = ModoPomodoro.PorDefecto,
             Command = new Command(() =>
             {
-                AppStorage.SavePomodoro(ModoPomodoro.Automatic,new TimePomodoros());
-                SelectedButton(buttonAutomatic!, ModoPomodoro.Automatic);
+                AppStorage.SavePomodoro(ModoPomodoro.PorDefecto, new TimePomodoros());
+                SelectedButton(buttonPorDefecto!, ModoPomodoro.PorDefecto);
+                SelectIcon(buttonPorDefecto!, Constants.Icons.PomodoroMarron);
             })
         });
 
         buttonMorning = new BotonMode(new BotonModeConfig
         {
-            IconSource = Constants.Icons.SunriseWhite,
+            IconSource = Constants.Icons.SunriseVerde,
             Text = "Mañana",
             Modo = ModoPomodoro.Morning,
             Command = new Command(() =>
@@ -62,14 +63,14 @@ class PomodoroModeSelector : ContentView
                     ShortBreakDuration = 7,
                     LongBreakDuration = 20,
                 };
-                AppStorage.SavePomodoro(ModoPomodoro.Morning,TimePomodoros);
-
+                AppStorage.SavePomodoro(ModoPomodoro.Morning, TimePomodoros);
                 SelectedButton(buttonMorning!, ModoPomodoro.Morning);
+                SelectIcon(buttonMorning!, Constants.Icons.SunriseMarron);
             })
         });
         buttonNight = new BotonMode(new BotonModeConfig
         {
-            IconSource = Constants.Icons.MoonWhite,
+            IconSource = Constants.Icons.MoonVerde,
             Text = "Noche",
             Modo = ModoPomodoro.Night,
             Command = new Command(() =>
@@ -80,15 +81,17 @@ class PomodoroModeSelector : ContentView
                     ShortBreakDuration = 5,
                     LongBreakDuration = 10,
                 };
-                AppStorage.SavePomodoro(ModoPomodoro.Night,TimePomodoros);
+                AppStorage.SavePomodoro(ModoPomodoro.Night, TimePomodoros);
                 SelectedButton(buttonNight!, ModoPomodoro.Night);
+                SelectIcon(buttonNight!, Constants.Icons.MoonMarron);
+
             })
         });
-        buttonManual = new BotonMode(new BotonModeConfig
+        buttonFlexible = new BotonMode(new BotonModeConfig
         {
-            IconSource = Constants.Icons.ManualWhite,
-            Text = "Manual",
-            Modo = ModoPomodoro.Manual,
+            IconSource = Constants.Icons.SolutionVerde,
+            Text = "Flexible",
+            Modo = ModoPomodoro.Flexible,
             Command = new Command(() =>
             {
                 TimePomodoros = new TimePomodoros
@@ -97,13 +100,14 @@ class PomodoroModeSelector : ContentView
                     ShortBreakDuration = 10,
                     LongBreakDuration = 20,
                 };
-                AppStorage.SavePomodoro(ModoPomodoro.Manual,TimePomodoros);
-                SelectedButton(buttonManual!, ModoPomodoro.Manual);
+                AppStorage.SavePomodoro(ModoPomodoro.Flexible, TimePomodoros);
+                SelectedButton(buttonFlexible!, ModoPomodoro.Flexible);
+                SelectIcon(buttonFlexible!, Constants.Icons.SolutionMarron);
             })
         });
 
-        Grid.SetRow(buttonAutomatic, 0);
-        Grid.SetColumn(buttonAutomatic, 0);
+        Grid.SetRow(buttonPorDefecto, 0);
+        Grid.SetColumn(buttonPorDefecto, 0);
 
         Grid.SetRow(buttonMorning, 0);
         Grid.SetColumn(buttonMorning, 1);
@@ -111,13 +115,13 @@ class PomodoroModeSelector : ContentView
         Grid.SetRow(buttonNight, 1);
         Grid.SetColumn(buttonNight, 0);
 
-        Grid.SetRow(buttonManual, 1);
-        Grid.SetColumn(buttonManual, 1);
+        Grid.SetRow(buttonFlexible, 1);
+        Grid.SetColumn(buttonFlexible, 1);
 
         grid.Children.Add(buttonNight);
-        grid.Children.Add(buttonManual);
+        grid.Children.Add(buttonFlexible);
         grid.Children.Add(buttonMorning);
-        grid.Children.Add(buttonAutomatic);
+        grid.Children.Add(buttonPorDefecto);
 
         Content = new StackLayout
         {
@@ -134,16 +138,25 @@ class PomodoroModeSelector : ContentView
     private void SelectedButton(BotonMode selectedButton, ModoPomodoro modoPomodoro)
     {
         // Cambiar el color de todos los botones a gris
-        buttonAutomatic.UpdateColor(Constants.Colors.BotonNoSelect);
-        buttonMorning.UpdateColor(Constants.Colors.BotonNoSelect);
-        buttonNight.UpdateColor(Constants.Colors.BotonNoSelect);
-        buttonManual.UpdateColor(Constants.Colors.BotonNoSelect);
+        buttonPorDefecto.UpdateColor(Constants.Colors.ModeButton);
+        buttonMorning.UpdateColor(Constants.Colors.ModeButton);
+        buttonNight.UpdateColor(Constants.Colors.ModeButton);
+        buttonFlexible.UpdateColor(Constants.Colors.ModeButton);
 
         // Cambiar el color del botón seleccionado
-        selectedButton.UpdateColor(Constants.Colors.BotonSelect);
-        
+        selectedButton.UpdateColor(Constants.Colors.ModeButtonActive);
+
         AppStorage.SaveData(KeyStorage.CurrentMode, modoPomodoro.ToString());
-        
+
+    }
+    private void SelectIcon(BotonMode selectedButton, string icon)
+    {
+        buttonPorDefecto.UpdateIconColor(Constants.Icons.PomodoroVerde);
+        buttonMorning.UpdateIconColor(Constants.Icons.SunriseVerde);
+        buttonNight.UpdateIconColor(Constants.Icons.MoonVerde);
+        buttonFlexible.UpdateIconColor(Constants.Icons.SolutionVerde);
+
+        selectedButton.UpdateIconColor(icon);   
     }
 
 }
