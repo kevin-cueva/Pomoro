@@ -25,10 +25,10 @@ public class ProgresoCircularDrawable : IDrawable
         canvas.FillColor = Colors.Black;
         canvas.FillCircle(centroX, centroY, radioInterno);
 
-        // 3. Dibujar "sector consumido" encima en color blanco (para ocultar)
+        // 3. Dibujar "sector consumido" encima en color gris (para ocultar)
         if (Progreso > 0)
         {
-            canvas.FillColor = Colors.White;
+            canvas.FillColor =  Color.FromArgb("#E6E6E6");
 
             var path = new PathF();
             float startAngle = -90; // Empezamos arriba (270° = -90°)
@@ -54,7 +54,7 @@ public class ProgresoCircularDrawable : IDrawable
             canvas.FillPath(path);
         }
 
-        // 4. Dibujar fondo rojo detrás del texto
+        // 4. Dibujar fondo negro detrás del texto
         float anchoTexto = 100;
         float altoTexto = 40;
         float posX = centroX - (anchoTexto / 2);
@@ -82,7 +82,7 @@ public class ProgresoCircularDrawable : IDrawable
         );
     }
 
-    private float DegreesToRadians(float degrees)
+    private static float DegreesToRadians(float degrees)
     {
         return (float)(Math.PI / 180) * degrees;
     }
