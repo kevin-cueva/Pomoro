@@ -35,7 +35,7 @@ public class PomodoroControlsConfig : ContentView
         {
             WidthRequest = 100,
             HeightRequest = 100,
-            BackgroundColor = Microsoft.Maui.Graphics.Colors.Purple,
+            BackgroundColor = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.BotonPlay],
             CornerRadius = 50,
             Source = Icons.PlayWhite,
             BorderColor = Microsoft.Maui.Graphics.Colors.Transparent,
@@ -55,7 +55,7 @@ public class PomodoroControlsConfig : ContentView
         {
             WidthRequest = 44,
             HeightRequest = 44,
-            BackgroundColor = Microsoft.Maui.Graphics.Colors.Gray,
+            BackgroundColor = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.ButtonSecondary],
             Source = Icons.ReloadWhite,
             BorderColor = Microsoft.Maui.Graphics.Colors.Transparent,
             CornerRadius = 44/2,
@@ -74,7 +74,7 @@ public class PomodoroControlsConfig : ContentView
         {
             WidthRequest = 44,
             HeightRequest = 44,
-            BackgroundColor = Microsoft.Maui.Graphics.Colors.Gray,
+            BackgroundColor = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.ButtonSecondary],
             Source = Icons.PauseWhire,
             BorderColor = Microsoft.Maui.Graphics.Colors.Transparent,
             CornerRadius = 44/2,

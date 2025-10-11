@@ -4,7 +4,7 @@ using Pomoro.Domain.Enums;
 
 public class ModoSwitch : ContentView
 {
-    public ModoPomodoro ModoPomodoro { get; private set; } = ModoPomodoro.Automatic;
+    public ModoPomodoro ModoPomodoro { get; private set; } = ModoPomodoro.PorDefecto;
     public ModoSwitch()
     {
         var grid = new Grid
@@ -79,13 +79,13 @@ public class ModoSwitch : ContentView
             // Animar el movimiento del indicator
             if (esModoAutomatico)
             {
-                ModoPomodoro = ModoPomodoro.Automatic;
+                ModoPomodoro = ModoPomodoro.PorDefecto;
                 indicator.BackgroundColor = Colors.Gray;
                 await indicator.TranslateTo(0, 0, 250, Easing.SinOut);
             }
             else
             {
-                ModoPomodoro = ModoPomodoro.Manual;
+                ModoPomodoro = ModoPomodoro.Flexible;
                 indicator.BackgroundColor = Colors.Gray;
                 await indicator.TranslateTo(100, 0, 250, Easing.SinOut); // (x, y, duración, tipoDeAnimación);
             }

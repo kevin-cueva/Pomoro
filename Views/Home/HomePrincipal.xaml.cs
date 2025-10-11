@@ -13,13 +13,11 @@ namespace Pomoro.Views.Home
 
         public HomePrincipal()
         {
-            //Boton switch de modo (automatico/manual)
-            //var switchModo = new ModoSwitch();
-            //COntroles
+            BackgroundColor = (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Background];
+            
             var pomodoroControlsConfig = new PomodoroControlsConfig();
-            //Boton de modo
             var botonGrid = new PomodoroModeSelector();
-
+            
             var soundService = new PlaySoundEndPomodoro(AudioManager.Current); 
             var timerService = new TimerService(Dispatcher);
             var modoOperationService = new ModoOperationService();
@@ -55,7 +53,8 @@ namespace Pomoro.Views.Home
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 Spacing = 30,
-                Children = { _grafico, pomodoroControlsConfig, botonGrid}
+                Children = { _grafico, pomodoroControlsConfig, botonGrid }
+                
             };
         }
     }

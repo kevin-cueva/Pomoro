@@ -28,6 +28,17 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
+    <Color x:Key="Background">#0B1C2C</Color>
+    <Color x:Key="CircleBorder">#7FD1B9</Color>
+    <Color x:Key="ButtonPlay">#7FD1B9</Color>
+    <Color x:Key="ButtonSecondary">#F18F01</Color>
+    <Color x:Key="ModeButton">#081522</Color>
+    <Color x:Key="ModeButtonIcon">#7FD1B9</Color>
+    <Color x:Key="ModeButtonActive">#A15C38</Color>
+    <Color x:Key="ModeButtonActiveIcon">#F5E8D3</Color>
+    <Color x:Key="Text">#E6E6E6</Color>
+ 
+
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>

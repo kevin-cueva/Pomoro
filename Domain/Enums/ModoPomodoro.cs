@@ -1,8 +1,8 @@
 namespace Pomoro.Domain.Enums;
 public enum ModoPomodoro
 {
-    Automatic,
+    PorDefecto,
     Morning,
     Night,
-    Manual
+    Flexible
 }

@@ -9,9 +9,17 @@ public static class Constants
     public static class Icons
     {
         public const string SettingsWhite = "isettings_icon_white";
+        public const string PomodoroVerde = "ipomodoro_verde";
+        public const string PomodoroMarron = "ipomodoro_marron";
         public const string SunriseWhite = "isunrise_white";
+        public const string SunriseMarron = "isunrise_marron";
+        public const string SunriseVerde = "isunrise_verde";
         public const string MoonWhite = "imoon_white";
+        public const string MoonMarron = "imoon_marron";
+        public const string MoonVerde = "imoon_verde";
         public const string ManualWhite = "isettings_maul_white";
+        public const string SolutionVerde = "isolution_verde";
+        public const string SolutionMarron = "isolution_marron";
         public const string PlayWhite = "iplay_white";
         public const string PauseWhire = "ipause_white";
         public const string ReloadWhite = "ireload_white";
@@ -32,6 +40,17 @@ public static class Constants
         public const string White = "White";
         public const string Gray600 = "Gray600";
         public const string Error = "Error";
+        public const string BotonPlay = "ButtonPlay";
+        public const string Background = "Background";
+        public const string CircleBorder = "CircleBorder";
+        public const string ButtonSecondary = "ButtonSecondary";
+        public const string ModeButton = "ModeButton";
+        public const string ModeButtonIcon = "ModeButtonIcon";
+        public const string ModeButtonActive = "ModeButtonActive";
+        public const string ModeButtonActiveIcon = "ModeButtonActiveIcon";
+        public const string Text = "Text";
+
+        
         // 👉 agrega aquí más colores
     }
 }

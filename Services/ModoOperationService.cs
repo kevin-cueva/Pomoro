@@ -50,7 +50,7 @@ public class ModoOperationService : IModoOperationService
 {
     string savedMode = AppStorage.GetData(KeyStorage.CurrentMode);
     
-    ModoPomodoro mode = Utils.ParseEnum(savedMode, ModoPomodoro.Automatic);
+    ModoPomodoro mode = Utils.ParseEnum(savedMode, ModoPomodoro.PorDefecto);
 
     // Obtener los tiempos según el modo (ya sea el parseado o el por defecto)
     TimePomodoros timesPomodoro = AppStorage.GetTimePomodoros(mode);
