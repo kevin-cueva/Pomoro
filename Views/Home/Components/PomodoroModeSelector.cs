@@ -145,7 +145,6 @@ class PomodoroModeSelector : ContentView
 
         // Cambiar el color del botón seleccionado
         selectedButton.UpdateColor(Constants.Colors.ModeButtonActive);
-
         AppStorage.SaveData(KeyStorage.CurrentMode, modoPomodoro.ToString());
 
     }
@@ -156,7 +155,7 @@ class PomodoroModeSelector : ContentView
         buttonNight.UpdateIconColor(Constants.Icons.MoonVerde);
         buttonFlexible.UpdateIconColor(Constants.Icons.SolutionVerde);
 
-        selectedButton.UpdateIconColor(icon);   
+        selectedButton.UpdateIconColor(icon);  
     }
 
 }
