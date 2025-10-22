@@ -35,7 +35,7 @@ public class PomodoroControlsConfig : ContentView
         {
             WidthRequest = 100,
             HeightRequest = 100,
-            BackgroundColor = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.BotonPlay],
+            BackgroundColor = (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.BotonPlay],
             CornerRadius = 50,
             Source = Icons.PlayWhite,
             BorderColor = Microsoft.Maui.Graphics.Colors.Transparent,

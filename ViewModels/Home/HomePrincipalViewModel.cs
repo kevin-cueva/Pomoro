@@ -71,6 +71,9 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
         _timerService.OnTimerCompleted += OnTiempoCompletado;
     }
 
+    /// <summary>
+    /// Inicia el temporizador del pomodoro con la duración correspondiente al estado actual.
+    /// </summary>
     private void IniciarPomodoro()
     {
         var duracion = TimeSpan.FromMinutes(_modoOperationService
@@ -78,6 +81,9 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
         _timerService.Start(duracion);
     }
 
+    /// <summary>
+    /// Pausa el temporizador del pomodoro si no ha finalizado.
+    /// </summary>
     private void PausaPomodoro()
     {
         if (_timerService.TiempoRestante != TimeSpan.Zero)
@@ -85,20 +91,33 @@ public class HomePrincipalViewModel : INotifyPropertyChanged
             _timerService.Pause();
         }
     }
+    /// <summary>
+    /// Reinicia el temporizador del pomodoro al estado inicial de trabajo.
+    /// </summary>
     private void ReiciarPomodoro()
     {
+        var nuevaDuracion = TimeSpan.FromMinutes(_modoOperationService
+            .GetOperationDuration(ModoOperation.Work));
+        _timerService.Start(nuevaDuracion);
         _timerService.Reload();
         Progreso = _timerService.Progreso;
         TiempoRestante = _timerService.TiempoRestante.ToString(@"mm\:ss");
+
         ActualizarUI();
 
     }
+    /// <summary>
+    /// Actualiza la interfaz de usuario con el progreso y el tiempo restante del temporizador.
+    /// </summary>
     private void ActualizarUI()
     {
         Progreso = _timerService.Progreso;
         TiempoRestante = _timerService.TiempoRestante.ToString(@"mm\:ss");
     }
 
+    /// <summary>
+    /// Maneja la lógica cuando el temporizador completa su cuenta regresiva.
+    /// </summary>
     private void OnTiempoCompletado()
     {
         _playSoundEndPomodoro.ReproducirSonidoFinPomodoro();
