@@ -2,6 +2,7 @@
 using Pomoro.Domain.DTOS;
 using Pomoro.Domain.Enums;
 using Pomoro.Domain.Constants;
+using Pomoro.Ui;
 namespace Pomoro;
 
 public partial class App : Application
@@ -9,7 +10,7 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
-
+		MainPage = new TabBarUi();
 		if (AppStorage.IsFirstRun())
 		{
 			AppStorage.SetFirstRunDone();
@@ -29,14 +30,6 @@ public partial class App : Application
 		}
 	}
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new Views.Home.HomePrincipal())
-		{
-			// Puedes establecer propiedades adicionales de la ventana aquí si es necesario.
-			// Por ejemplo, puedes establecer el título de la ventana:
-			Title = "Pomoro"
-		};
-	}
+	
 
 }
