@@ -1,62 +1,89 @@
-using Microsoft.Maui.Controls.Shapes;
-using Microsoft.VisualBasic;
 using Pomoro.Views.Home;
 
 namespace Pomoro.Ui;
 
 public class TabBarUi : Shell
 {
+    // Estilo para las pestañas
+    private  Style tabStyle = null!;
+
     public TabBarUi()
     {
-        SetNavBarIsVisible(this, false); // Oculta la barra superior globalmente
-
-        // Definir colores globales del TabBar
-        // Fondo del TabBar
-        this.SetAppThemeColor(TabBarBackgroundColorProperty, (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Background], Colors.Black);
-        // Color de los íconos y texto seleccionados
-        this.SetAppThemeColor(TabBarForegroundColorProperty, (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.ModeButtonIcon], Colors.Orange); // Claro y oscuro
-        // Color de los íconos y texto no seleccionados
-        this.SetAppThemeColor(TabBarUnselectedColorProperty, Colors.Gray, Colors.Gray);// Claro y oscuro
-
-        var tabBar = new TabBar();
-        // Tab 1: Pomodoro
-        var pomodoroTab = new ShellContent
+        StyleTabBar();
+        SetNavBarIsVisible(this, false);
+        // ✅ Todas las pestañas como 'Tab'
+        var pomodoroTab = new Tab
         {
             Title = "Pomodoro",
-            Content = new HomePrincipal(),
-            Icon = Domain.Constants.Constants.Icons.PomodoroVerde
+            Icon = Domain.Constants.Constants.Icons.PomodoroVerde,
+            Items = { new ShellContent { Content = new HomePrincipal() } },
+            Style = tabStyle
+
         };
 
-        // Tab 2: Temas de Estudio
-        var temasTab = new ShellContent
+        var temasTab = new Tab
         {
             Title = "Temas",
-            //Content = new TemasDeEstudioPage(),
-            Icon = "study_icon.png"
+            Icon = "study_icon.png",
+            Items = { new ShellContent { /* Content = new TemasDeEstudioPage() */ } }
         };
 
-        // Tab 3: Gráfica
-        var graficaTab = new ShellContent
+        var graficaTab = new Tab
         {
             Title = "Gráfica",
-            //Content = new GraficaPage(),
-            Icon = "chart_icon.png"
+            Icon = "chart_icon.png",
+            Items = { new ShellContent { /* Content = new GraficaPage() */ } }
         };
 
-        // Tab 4: Configuración
-        var configuracionTab = new ShellContent
+        var configuracionTab = new Tab
         {
             Title = "Configuración",
-            //Content = new ConfiguracionPage(),
-            Icon = "settings_icon.png"
+            Icon = "settings_icon.png",
+            Items = { new ShellContent { /* Content = new ConfiguracionPage() */ } }
         };
-        // Agregar los tabs al TabBar
-        tabBar.Items.Add(pomodoroTab);
-        tabBar.Items.Add(temasTab);
-        tabBar.Items.Add(graficaTab);
-        tabBar.Items.Add(configuracionTab);
 
-        Shell.SetNavBarIsVisible(pomodoroTab, false); // 👈 Oculta la barra superior
-        Items.Add(tabBar);
+        // Añadir directamente al Shell (sin crear TabBar manualmente)
+        Items.Add(pomodoroTab);
+        Items.Add(temasTab);
+        Items.Add(graficaTab);
+        Items.Add(configuracionTab);
+    }
+    
+    private void StyleTabBar()
+    {
+         // Configurar colores del TabBar
+        this.SetAppThemeColor(Shell.TabBarBackgroundColorProperty,
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Background],
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Background]);
+
+        this.SetAppThemeColor(Shell.TabBarForegroundColorProperty,
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.CircleBorder],
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.CircleBorder]);
+
+        this.SetAppThemeColor(Shell.TabBarUnselectedColorProperty,
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Gray600],
+            (Color)Application.Current!.Resources[Domain.Constants.Constants.Colors.Gray600]);
+
+        tabStyle = new Style(typeof(Tab))
+        {
+            Setters =
+            {
+                new Setter
+                {
+                    Property = Shell.TabBarTitleColorProperty,
+                    Value = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.CircleBorder]
+                },
+                new Setter
+                {
+                    Property = Shell.TabBarUnselectedColorProperty,
+                    Value = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.Gray600]
+                },
+                new Setter
+                {
+                    Property = Shell.TabBarForegroundColorProperty,
+                    Value = (Color)Application.Current.Resources[Domain.Constants.Constants.Colors.CircleBorder]
+                }
+            }
+        };
     }
 }
