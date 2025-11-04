@@ -8,6 +8,9 @@ public static class Constants
     /// </summary>
     public static class Icons
     {
+        public const string BookTab = "ibook_icon";
+        public const string ChartTab = "ichart_icon";
+        public const string SettingsTab = "isettings_icon";
         public const string SettingsWhite = "isettings_icon_white";
         public const string PomodoroVerde = "ipomodoro_verde";
         public const string PomodoroMarron = "ipomodoro_marron";
