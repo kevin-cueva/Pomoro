@@ -14,7 +14,7 @@ public class TabBarUi : Shell
         // ✅ Todas las pestañas como 'Tab'
         var pomodoroTab = new Tab
         {
-            Title = "Pomodoro",
+            //Title = "Pomodoro",
             Icon = Domain.Constants.Constants.Icons.PomodoroVerde,
             Items = { new ShellContent { Content = new HomePrincipal() } },
             Style = tabStyle
@@ -23,22 +23,22 @@ public class TabBarUi : Shell
 
         var temasTab = new Tab
         {
-            Title = "Temas",
-            Icon = "study_icon.png",
+            //Title = "Temas",
+            Icon = Domain.Constants.Constants.Icons.BookTab,
             Items = { new ShellContent { /* Content = new TemasDeEstudioPage() */ } }
         };
 
         var graficaTab = new Tab
         {
-            Title = "Gráfica",
-            Icon = "chart_icon.png",
+            //Title = "Gráfica",
+            Icon = Domain.Constants.Constants.Icons.ChartTab,
             Items = { new ShellContent { /* Content = new GraficaPage() */ } }
         };
 
         var configuracionTab = new Tab
         {
-            Title = "Configuración",
-            Icon = "settings_icon.png",
+            //Title = "Configuración",
+            Icon = Domain.Constants.Constants.Icons.SettingsTab,
             Items = { new ShellContent { /* Content = new ConfiguracionPage() */ } }
         };
 
