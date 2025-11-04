@@ -1,4 +1,5 @@
 using Pomoro.Views.Home;
+using Pomoro.Views.Settings;
 
 namespace Pomoro.Ui;
 
@@ -39,7 +40,7 @@ public class TabBarUi : Shell
         {
             //Title = "Configuración",
             Icon = Domain.Constants.Constants.Icons.SettingsTab,
-            Items = { new ShellContent { /* Content = new ConfiguracionPage() */ } }
+            Items = { new ShellContent {  Content = new Settings()  } }
         };
 
         // Añadir directamente al Shell (sin crear TabBar manualmente)
