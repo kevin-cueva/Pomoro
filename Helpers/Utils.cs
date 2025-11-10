@@ -1,3 +1,5 @@
+using Pomoro.Domain.Enums;
+
 namespace Pomoro.Helpers;
 public static class Utils
 {
@@ -11,7 +13,7 @@ public static class Utils
     /// <returns>Valor parseado del enum, o valor por defecto si falla</returns>
     public static T ParseEnum<T>(string value, T defaultValue) where T : struct, Enum
     {
-        if (!string.IsNullOrWhiteSpace(value) && 
+        if (!string.IsNullOrWhiteSpace(value) &&
             Enum.TryParse<T>(value, ignoreCase: true, out T parsedValue))
         {
             return parsedValue;
@@ -19,5 +21,22 @@ public static class Utils
 
         System.Diagnostics.Debug.WriteLine($"Valor inválido o vacío para enum {typeof(T).Name}: '{value}'. Usando valor por defecto: {defaultValue}.");
         return defaultValue;
+    }
+
+    /// <summary>
+    /// Obtiene el nombre descriptivo de un modo de Pomodoro.
+    /// </summary>
+    /// <param name="modo"></param>
+    /// <returns></returns>
+    public static string NombreModoPomodoro(ModoPomodoro modo)
+    {
+        return modo switch
+        {
+            ModoPomodoro.PorDefecto => "Por defecto",
+            ModoPomodoro.Morning => "Mañana",
+            ModoPomodoro.Night => "Noche",
+            ModoPomodoro.Flexible => "Flexible",
+            _ => "Desconocido"
+        };
     }
 }
