@@ -40,7 +40,7 @@ class PomodoroModeSelector : ContentView
         buttonPorDefecto = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.PomodoroVerde,
-            Text = "Por defecto",
+            Text = Utils.NombreModoPomodoro(ModoPomodoro.PorDefecto),
             Modo = ModoPomodoro.PorDefecto,
             Command = new Command(() =>
             {
@@ -53,7 +53,7 @@ class PomodoroModeSelector : ContentView
         buttonMorning = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.SunriseVerde,
-            Text = "Mañana",
+            Text = Utils.NombreModoPomodoro(ModoPomodoro.Morning),
             Modo = ModoPomodoro.Morning,
             Command = new Command(() =>
             {
@@ -71,7 +71,7 @@ class PomodoroModeSelector : ContentView
         buttonNight = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.MoonVerde,
-            Text = "Noche",
+            Text = Utils.NombreModoPomodoro(ModoPomodoro.Night),
             Modo = ModoPomodoro.Night,
             Command = new Command(() =>
             {
@@ -90,7 +90,7 @@ class PomodoroModeSelector : ContentView
         buttonFlexible = new BotonMode(new BotonModeConfig
         {
             IconSource = Constants.Icons.SolutionVerde,
-            Text = "Flexible",
+            Text = Utils.NombreModoPomodoro(ModoPomodoro.Flexible),
             Modo = ModoPomodoro.Flexible,
             Command = new Command(() =>
             {
