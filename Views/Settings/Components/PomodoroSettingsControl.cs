@@ -19,20 +19,14 @@ public class PomodoroSettingsControl : ContentView
         set => SetValue(PomodoroProperty, value);
     }
 
-    private readonly Label _label;
-
+    private readonly TimeSliderCard _timeSliderCard;
     public PomodoroSettingsControl()
     {
-        _label = new Label
-        {
-            FontSize = 16,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-
+        
+        _timeSliderCard = new TimeSliderCard();
         Content = new VerticalStackLayout
         {
-            Children = { _label }
+            Children = { _timeSliderCard }
         };
     }
 
@@ -44,8 +38,8 @@ public class PomodoroSettingsControl : ContentView
         var control = (PomodoroSettingsControl)bindable;
         var pomodoro = newValue as PomodoroItemDto;
 
-        control._label.Text = pomodoro is null
-            ? string.Empty
-            : $"Este es un control de configuración de Pomodoro. {pomodoro.NombreModo}";
+        // control._label.Text = pomodoro is null
+        //     ? string.Empty
+        //     : $"Este es un control de configuración de Pomodoro. {pomodoro.NombreModo}";
     }
 }
