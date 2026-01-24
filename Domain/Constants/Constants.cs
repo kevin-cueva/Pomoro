@@ -56,4 +56,16 @@ public static class Constants
         
         // 👉 agrega aquí más colores
     }
+
+    public static class Tiempos
+    {
+        public const int MinutosMinTrabajo = 1;
+        public const int MinutosMaxTrabajo = 60;
+        public const int MinutosMinDescanso = 1;
+        public const int MinutosMaxDescanso = 30;
+        public const int MinutosMinDescansoLargo = 5;
+        public const int MinutosMaxDescansoLargo = 60;
+        public const int VecesMinimasParaDescansoLargo = 2;
+        public const int VecesMaximasParaDescansoLargo = 10;
+    }
 }
