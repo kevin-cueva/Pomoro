@@ -24,11 +24,14 @@ public class Settings : ContentPage
 		CollectionViewComponent();
 
 		
-		// Envolver en un layout contenedor
-		Content = new VerticalStackLayout
+		// Envolver en un ScrollView con layout contenedor
+		Content = new ScrollView
 		{
-			Children = { titulo, collectionView },
-			// El padding seguro se aplica a la página, y el layout lo respeta
+			Content = new VerticalStackLayout
+			{
+				Children = { titulo, collectionView },
+				// El padding seguro se aplica a la página, y el layout lo respeta
+			}
 		};
 	}
 

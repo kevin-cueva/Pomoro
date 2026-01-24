@@ -12,7 +12,7 @@ public class TimeSliderCard : ContentView
 
 	public TimeSliderCard()
 	{
-		contenedorPrincipal = new List<Border>();
+		contenedorPrincipal = [];
 		BuildCards();
 	}
 
@@ -20,7 +20,7 @@ public class TimeSliderCard : ContentView
 	{
 		contenedorPrincipal.Clear();
 		
-		if (SlidersData == null || !SlidersData.Any())
+		if (SlidersData == null || SlidersData.Count == 0)
 		{
 			Content = new VerticalStackLayout
 			{
@@ -30,7 +30,7 @@ public class TimeSliderCard : ContentView
 						Text = "No hay datos para mostrar.",
 						FontSize = 16,
 						HorizontalOptions = LayoutOptions.Center,
-						VerticalOptions = LayoutOptions.CenterAndExpand
+						VerticalOptions = LayoutOptions.Center
 					}
 				}
 			};
