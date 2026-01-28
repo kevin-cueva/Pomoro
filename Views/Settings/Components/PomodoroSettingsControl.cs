@@ -19,7 +19,7 @@ public class PomodoroSettingsControl : ContentView
         set => SetValue(PomodoroProperty, value);
     }
 
-    private readonly TimeSliderCard _timeSliderCard;
+    public  TimeSliderCard _timeSliderCard;
 
     public PomodoroSettingsControl()
     {
