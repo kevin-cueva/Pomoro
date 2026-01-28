@@ -39,4 +39,23 @@ public static class Utils
             _ => "Desconocido"
         };
     }
+
+    /// <summary>
+    /// Convierte un nombre descriptivo a su correspondiente ModoPomodoro.
+    /// </summary>
+    /// <param name="nombre">Nombre descriptivo del modo</param>
+    /// <returns>ModoPomodoro correspondiente, o PorDefecto si no coincide</returns>
+    public static ModoPomodoro ModoPomodoroPorNombre(string nombre)
+    {
+        return nombre switch
+        {
+            "Por defecto" => ModoPomodoro.PorDefecto,
+            "Mañana" => ModoPomodoro.Morning,
+            "Noche" => ModoPomodoro.Night,
+            "Flexible" => ModoPomodoro.Flexible,
+            _ => ModoPomodoro.PorDefecto
+        };
+    }
+
+    
 }

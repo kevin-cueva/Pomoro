@@ -1,5 +1,6 @@
 using Pomoro.Domain.DTOS;
 using Pomoro.Domain.Enums;
+using Pomoro.Helpers;
 
 namespace Pomoro.Views.Settings.Components;
 
@@ -80,7 +81,7 @@ public class PomodoroSettingsControl : ContentView
             sliderDataBreak,
             sliderDataLongBreak,
             sliderDataRepetitions
-        });
+        }, ModoPomodoro.PorDefecto);
     }
 
     private static void OnPomodoroChanged(BindableObject bindable, object oldValue, object newValue)
@@ -88,15 +89,17 @@ public class PomodoroSettingsControl : ContentView
         var control = (PomodoroSettingsControl)bindable;
         var pomodoro = newValue as PomodoroItemDto;
 
-        if (pomodoro != null && control._timeSliderCard.SlidersData != null && control._timeSliderCard.SlidersData.Count >= 4)
+        if (pomodoro != null && control._timeSliderCard.ViewModel.SlidersData != null && control._timeSliderCard.ViewModel.SlidersData.Count >= 4)
         {
-            control._timeSliderCard.SlidersData[0].ValorActual = pomodoro.Tiempos[0].WorkDuration;
-            control._timeSliderCard.SlidersData[1].ValorActual = pomodoro.Tiempos[0].ShortBreakDuration;
-            control._timeSliderCard.SlidersData[2].ValorActual = pomodoro.Tiempos[0].LongBreakDuration;
-            control._timeSliderCard.SlidersData[3].ValorActual = pomodoro.Tiempos[0].Repetitions;
-
+            control._timeSliderCard.ViewModel.SlidersData[0].ValorActual = pomodoro.Tiempos[0].WorkDuration;
+            control._timeSliderCard.ViewModel.SlidersData[1].ValorActual = pomodoro.Tiempos[0].ShortBreakDuration;
+            control._timeSliderCard.ViewModel.SlidersData[2].ValorActual = pomodoro.Tiempos[0].LongBreakDuration;
+            control._timeSliderCard.ViewModel.SlidersData[3].ValorActual = pomodoro.Tiempos[0].Repetitions;
+            
             // Reconstruir las tarjetas para reflejar los nuevos valores
-            control._timeSliderCard.UpdateSlidersData(control._timeSliderCard.SlidersData);
+            control._timeSliderCard.UpdateSlidersData(
+                control._timeSliderCard.GetCurrentSlidersData(), 
+                Utils.ModoPomodoroPorNombre(pomodoro.NombreModo));
         }
     }
 }

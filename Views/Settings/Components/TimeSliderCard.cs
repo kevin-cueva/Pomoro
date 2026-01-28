@@ -2,17 +2,20 @@ using System.Drawing;
 using System.Reflection.Metadata;
 using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.DTOS;
+using Pomoro.Helpers;
+using Pomoro.ViewModels.Setting;
 
 namespace Pomoro.Views.Settings.Components;
 
 public class TimeSliderCard : ContentView
 {
-	public List<SliderDto> SlidersData { get; set; }
 	private readonly List<Border> contenedorPrincipal;
+	public TimeSliderCardViewModel ViewModel { get; set; }
 
 	public TimeSliderCard()
 	{
 		contenedorPrincipal = [];
+		ViewModel = new TimeSliderCardViewModel();
 		BuildCards();
 	}
 
@@ -20,7 +23,7 @@ public class TimeSliderCard : ContentView
 	{
 		contenedorPrincipal.Clear();
 		
-		if (SlidersData == null || SlidersData.Count == 0)
+		if (ViewModel.SlidersData == null || ViewModel.SlidersData.Count == 0)
 		{
 			Content = new VerticalStackLayout
 			{
@@ -37,7 +40,7 @@ public class TimeSliderCard : ContentView
 			return;
 		}
 
-		foreach (var sliderData in SlidersData)
+		foreach (var sliderData in ViewModel.SlidersData)
 		{
 			var card = CreateSliderCard(sliderData);
 			contenedorPrincipal.Add(card);
@@ -148,7 +151,7 @@ public class TimeSliderCard : ContentView
 				primerComponente,
 				selectorTiempo,
 				tercerComponente,
-				sufijoDescripcion
+				sufijoDescripcion,
 			}
 		};
 
@@ -164,9 +167,14 @@ public class TimeSliderCard : ContentView
 		};
 	}
 
-	public void UpdateSlidersData(List<SliderDto> newData)
+	public void UpdateSlidersData(List<SliderDto> newData, Pomoro.Domain.Enums.ModoPomodoro modoPomodoro)
 	{
-		SlidersData = newData;
+		ViewModel.UpdateSlidersData(newData, modoPomodoro);
 		BuildCards();
 	}
+
+	public List<SliderDto> GetCurrentSlidersData()
+	{
+		return ViewModel.GetCurrentSlidersData();
+	}	
 }

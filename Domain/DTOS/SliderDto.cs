@@ -1,4 +1,5 @@
 using System;
+using Pomoro.Domain.Enums;
 
 namespace Pomoro.Domain.DTOS;
 

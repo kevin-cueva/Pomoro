@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls.Shapes;
 using Pomoro.Domain.Constants;
 using Pomoro.Domain.DTOS;
+using Pomoro.Domain.Enums;
 using Pomoro.Helpers;
 using Pomoro.Views.Settings.Components;
 namespace Pomoro.Views.Settings;
@@ -63,6 +64,7 @@ public class Settings : ContentPage
 					Pomodoro = PomodoroItemDtoNamed(nameLabel.Text ?? string.Empty)!,
 					IsVisible = false
 				};
+				
 				// Agregar evento de clic al contenedor
 				var tapGesture = new TapGestureRecognizer();
 				tapGesture.Tapped += (s, e) =>
