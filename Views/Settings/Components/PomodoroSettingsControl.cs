@@ -84,6 +84,12 @@ public class PomodoroSettingsControl : ContentView
         }, ModoPomodoro.PorDefecto);
     }
 
+    ///<summary> Manejador de cambio de propiedad para actualizar 
+    /// los sliders cuando cambia el Pomodoro </summary>
+    /// <param name="bindable">El objeto vinculable que contiene la propiedad.</param>
+    /// <param name="oldValue">El valor antiguo de la propiedad.</param>
+    /// <param name="newValue">El nuevo valor de la propiedad.</param>
+    /// <returns>No devuelve ningún valor.</returns>
     private static void OnPomodoroChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var control = (PomodoroSettingsControl)bindable;
