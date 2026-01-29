@@ -54,7 +54,7 @@ public class TimeSliderCard : ContentView
         var sliderControl = new Slider
         {
             HorizontalOptions = LayoutOptions.Fill,
-			Value = slider.ValorActual
+            BindingContext = slider
         };
         sliderControl.SetBinding(Slider.MinimumProperty, nameof(SliderDto.MinValue));
         sliderControl.SetBinding(Slider.MaximumProperty, nameof(SliderDto.MaxValue));
