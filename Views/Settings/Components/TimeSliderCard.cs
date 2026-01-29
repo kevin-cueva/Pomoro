@@ -1,180 +1,127 @@
-using System.Drawing;
-using System.Reflection.Metadata;
 using Microsoft.Maui.Controls.Shapes;
-using Pomoro.Domain.DTOS;
-using Pomoro.Helpers;
 using Pomoro.ViewModels.Setting;
 
 namespace Pomoro.Views.Settings.Components;
 
 public class TimeSliderCard : ContentView
 {
-	private readonly List<Border> contenedorPrincipal;
-	public TimeSliderCardViewModel ViewModel { get; set; }
+    public TimeSliderCardViewModel ViewModel { get; }
 
-	public TimeSliderCard()
-	{
-		contenedorPrincipal = [];
-		ViewModel = new TimeSliderCardViewModel();
-		BuildCards();
-	}
+    public TimeSliderCard()
+    {
+        ViewModel = new TimeSliderCardViewModel();
+        Content = new VerticalStackLayout { Spacing = 10 };
+    }
 
-	private void BuildCards()
-	{
-		contenedorPrincipal.Clear();
-		
-		if (ViewModel.SlidersData == null || ViewModel.SlidersData.Count == 0)
-		{
-			Content = new VerticalStackLayout
-			{
-				Children = {
-					new Label
-					{
-						Text = "No hay datos para mostrar.",
-						FontSize = 16,
-						HorizontalOptions = LayoutOptions.Center,
-						VerticalOptions = LayoutOptions.Center
-					}
-				}
-			};
-			return;
-		}
+    public void Initialize()
+    {
+        var layout = (VerticalStackLayout)Content;
+        layout.Children.Clear();
 
-		foreach (var sliderData in ViewModel.SlidersData)
-		{
-			var card = CreateSliderCard(sliderData);
-			contenedorPrincipal.Add(card);
-		}
+        foreach (var slider in ViewModel.SlidersData)
+        {
+            layout.Children.Add(CreateSliderCard(slider));
+        }
+    }
 
-		var mainLayout = new VerticalStackLayout();
-		foreach (var child in contenedorPrincipal)
-		{
-			mainLayout.Children.Add(child);
-		}
+    private View CreateSliderCard(SliderDto slider)
+    {
+        var icon = new Image
+        {
+            WidthRequest = 24,
+            HeightRequest = 24,
+            Source = slider.Icono
+        };
 
-		Content = mainLayout;
-	}
+        var title = new Label
+        {
+            FontSize = 18,
+            VerticalOptions = LayoutOptions.Center
+        };
+        title.SetBinding(Label.TextProperty, nameof(SliderDto.TipoAjuste));
 
-	private Border CreateSliderCard(SliderDto sliderData)
-	{
-		#region Primer Componente: Icono, Titulo y Tiempo Seleccionado
-		var iconoTipoSlider = new Image
-		{
-			WidthRequest = 24,
-			HeightRequest = 24,
-			Source = sliderData?.Icono ?? Domain.Constants.Constants.Icons.BookTab,
-		};
-		
-		var tituloSlider = new Label
-		{
-			Text = sliderData?.TipoAjuste ?? "Trabajo",
-			FontSize = 18,
-			VerticalOptions = LayoutOptions.Center
-		};
+        var valueLabel = new Label
+        {
+            FontSize = 16,
+            HorizontalOptions = LayoutOptions.End
+        };
+        valueLabel.SetBinding(
+            Label.TextProperty,
+            nameof(SliderDto.ValorActual),
+            stringFormat: "{0} min"
+        );
 
-		var tiempoSeleccionado = new Label
-		{
-			Text = $"{(int)(sliderData?.ValorActual ?? 25)} min",
-			FontSize = 16,
-			VerticalOptions = LayoutOptions.Center,
-			HorizontalOptions = LayoutOptions.End
-		};
+        var sliderControl = new Slider
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+			Value = slider.ValorActual
+        };
+        sliderControl.SetBinding(Slider.MinimumProperty, nameof(SliderDto.MinValue));
+        sliderControl.SetBinding(Slider.MaximumProperty, nameof(SliderDto.MaxValue));
+        sliderControl.SetBinding(
+            Slider.ValueProperty,
+            nameof(SliderDto.ValorActual),
+            BindingMode.TwoWay
+        );
 
-		var selectorTiempo = new Slider
-		{
-			Minimum = sliderData?.MinValue ?? 1,
-			Maximum = sliderData?.MaxValue ?? 60,
-			Value = sliderData?.ValorActual ?? 25,
-			HorizontalOptions = LayoutOptions.Fill
-		};
+        var header = new HorizontalStackLayout
+        {
+            Spacing = 10,
+            Children = { icon, title, valueLabel }
+        };
 
-		// Actualizar el label cuando cambia el slider
-		selectorTiempo.ValueChanged += (s, e) =>
-		{
-			tiempoSeleccionado.Text = $"{(int)e.NewValue} min";
-		};
+        var minLabel = new Label { FontSize = 12 };
+        minLabel.SetBinding(
+            Label.TextProperty,
+            nameof(SliderDto.MinValue),
+            stringFormat: "{0} min"
+        );
 
-		var primerComponente = new HorizontalStackLayout
-		{
-			Spacing = 10,
-			Children = { iconoTipoSlider, tituloSlider, tiempoSeleccionado }
-		};
-		#endregion
+        var maxLabel = new Label
+        {
+            FontSize = 12,
+            HorizontalOptions = LayoutOptions.End
+        };
+        maxLabel.SetBinding(
+            Label.TextProperty,
+            nameof(SliderDto.MaxValue),
+            stringFormat: "{0} min"
+        );
 
-		#region Tercer Componente: Labels Minimo, Maximo
-		var minimoTiempoLabel = new Label
-		{
-			Text = $"{sliderData?.MinValue ?? 1} min",
-			FontSize = 14,
-			HorizontalOptions = LayoutOptions.Start
-		};
-		
-		var maximoTiempoLabel = new Label
-		{
-			Text = $"{sliderData?.MaxValue ?? 60} min",
-			FontSize = 14,
-			HorizontalOptions = LayoutOptions.End
-		};
+        var range = new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Auto)
+            }
+        };
+        range.Add(minLabel, 0, 0);
+        range.Add(maxLabel, 1, 0);
 
-		var tercerComponente = new Grid
-		{
-			ColumnDefinitions =
-			{
-				new ColumnDefinition { Width = GridLength.Star },
-				new ColumnDefinition { Width = GridLength.Auto }
-			}
-		};
+        var suffix = new Label { FontSize = 12 };
+        suffix.SetBinding(Label.TextProperty, nameof(SliderDto.SufijoDescripcion));
 
-		tercerComponente.Add(minimoTiempoLabel, 0, 0);
-		tercerComponente.Add(maximoTiempoLabel, 1, 0);
-		#endregion
+        suffix.BindingContextChanged += (s, e) =>
+        {
+            if (suffix.BindingContext is SliderDto dto)
+                suffix.IsVisible = !string.IsNullOrWhiteSpace(dto.SufijoDescripcion);
+        };
 
-		#region Cuarto Componente: Sufijo Descripcion
-		var sufijoDescripcion = new Label
-		{
-			Text = sliderData?.SufijoDescripcion ?? "min",
-			FontSize = 12,
-			HorizontalOptions = LayoutOptions.Start
-		};
-		
-		if (string.IsNullOrEmpty(sufijoDescripcion.Text))
-		{
-			sufijoDescripcion.IsVisible = false;
-		}
-		#endregion
-
-		var contenedorInterno = new VerticalStackLayout
-		{
-			Spacing = 10,
-			Children = 
-			{
-				primerComponente,
-				selectorTiempo,
-				tercerComponente,
-				sufijoDescripcion,
-			}
-		};
-
-		return new Border
-		{
-			Stroke = Colors.LightGray,
-			StrokeThickness = 1,
-			Background = new SolidColorBrush(Colors.White),
-			Padding = new Thickness(15),
-			StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(12) },
-			Margin = new Thickness(0, 10),
-			Content = contenedorInterno
-		};
-	}
-
-	public void UpdateSlidersData(List<SliderDto> newData, Pomoro.Domain.Enums.ModoPomodoro modoPomodoro)
-	{
-		ViewModel.UpdateSlidersData(newData, modoPomodoro);
-		BuildCards();
-	}
-
-	public List<SliderDto> GetCurrentSlidersData()
-	{
-		return ViewModel.GetCurrentSlidersData();
-	}	
+        // 🔑 AQUÍ está la clave
+        return new Border
+        {
+            BindingContext = slider, // ✅ cada card tiene su propio contexto
+            Stroke = Colors.LightGray,
+            StrokeThickness = 1,
+            Padding = 15,
+            Margin = new Thickness(0, 10),
+            StrokeShape = new RoundRectangle { CornerRadius = 12 },
+            Content = new VerticalStackLayout
+            {
+                Spacing = 10,
+                Children = { header, sliderControl, range, suffix }
+            }
+        };
+    }
 }

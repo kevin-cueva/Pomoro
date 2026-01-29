@@ -1,14 +1,29 @@
-using System;
-using Pomoro.Domain.Enums;
+using System.ComponentModel;
 
-namespace Pomoro.Domain.DTOS;
-
-public class SliderDto
+public class SliderDto : INotifyPropertyChanged
 {
-    public string? SufijoDescripcion { get; set; } = null;
-    public  int MinValue { get; set; } = 1;
-    public  int MaxValue { get; set; } = 60;
-    public  string Icono { get; set; } = "book_tab_icon.png";
-    public required int ValorActual { get; set; }
-    public required string TipoAjuste { get; set; } = "Repeticiones";
+    private int _valorActual;
+
+    public int ValorActual
+    {
+        get => _valorActual;
+        set
+        {
+            if (_valorActual != value)
+            {
+                _valorActual = value;
+                OnPropertyChanged(nameof(ValorActual));
+            }
+        }
+    }
+
+    public int MinValue { get; set; }
+    public int MaxValue { get; set; }
+    public string Icono { get; set; } = string.Empty;
+    public string TipoAjuste { get; set; } = string.Empty;
+    public string? SufijoDescripcion { get; set; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string name)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

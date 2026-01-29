@@ -64,41 +64,6 @@ public class Settings : ContentPage
 					Pomodoro = PomodoroItemDtoNamed(nameLabel.Text ?? string.Empty)!,
 					IsVisible = false
 				};
-
-				#region Boton para Guardar Cambios
-				var sliderData = itemPomodoroSettingsControl._timeSliderCard.GetCurrentSlidersData();
-				var guardarCambiosButton = new Button
-				{
-					Text = "Guardar Cambios",
-					BackgroundColor = Colors.Green,
-					TextColor = Colors.White,
-					CornerRadius = 8,
-					Margin = new Thickness(0, 10, 0, 0),
-					IsVisible = false
-				};
-				guardarCambiosButton.Clicked += (s, e) =>
-				{
-					// Actualizar el PomodoroItemDto con los nuevos valores de los sliders
-					var pomodoroItem = PomodoroItemDtoNamed(nameLabel.Text ?? string.Empty);
-					if (pomodoroItem != null)
-					{
-                        TimePomodoros timePomodoros = new()
-                        {
-                            WorkDuration = sliderData[0].ValorActual,
-                            ShortBreakDuration = sliderData[1].ValorActual,
-                            LongBreakDuration = sliderData[2].ValorActual,
-                            Repetitions = sliderData[3].ValorActual
-                        };
-
-                        // Guardar los cambios en el almacenamiento
-                        AppStorage.SavePomodoro(Utils.ModoPomodoroPorNombre(
-							pomodoroItem.NombreModo), timePomodoros);
-
-						// Mostrar una alerta de confirmación
-						Application.Current.MainPage.DisplayAlert("Éxito", "Los cambios se han guardado correctamente.", "OK");
-					}
-				};
-				#endregion
 				
 				// Agregar evento de clic al contenedor
 				var tapGesture = new TapGestureRecognizer();
@@ -107,7 +72,6 @@ public class Settings : ContentPage
 					// Manejar el clic del contenedor
 					itemPomodoroSettingsControl.Pomodoro = PomodoroItemDtoNamed(nameLabel.Text ?? string.Empty)!;
 					itemPomodoroSettingsControl.IsVisible = !itemPomodoroSettingsControl.IsVisible;
-					guardarCambiosButton.IsVisible = !guardarCambiosButton.IsVisible;
 					
 				};
 				rowContainer.GestureRecognizers.Add(tapGesture);
@@ -116,7 +80,7 @@ public class Settings : ContentPage
 
 				var stackLayout = new VerticalStackLayout
 				   {
-					   Children = { nameLabel, itemPomodoroSettingsControl, guardarCambiosButton },
+					   Children = { nameLabel, itemPomodoroSettingsControl },
 					   Padding = new Thickness(10)
 				   };
 
